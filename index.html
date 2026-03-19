@@ -353,8 +353,7 @@ function showEdit(id){
     <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ed" value="${t.planned||''}"></div><div><label>Tijdstip</label><input type="time" class="mi" id="etm" value="${t.planned_time||''}"></div></div>
     <label>Notities</label><textarea class="mi" id="en" rows="3">${esc(t.notes||'')}</textarea>
     <div id="ecr" style="${t.planned?'':'display:none'}">
-      <button class="btn-gcal-add" id="gcl-api" ${!gcalToken?'title="Eerst verbinden met Google Agenda"':''}>📅 ${gcalToken?'Toevoegen aan Google Agenda':'Verbind Google Agenda'}</button>
-      <button class="bics-full" id="ecb">📥 Download .ics bestand</button>
+      <button class="btn-gcal-add" id="gcl-api">📅 ${gcalToken?'Toevoegen aan Google Agenda':'Verbind Google Agenda'}</button>
     </div>
     <div class="brow"><button class="bsave" id="es">Opslaan</button><button class="bdel" id="edl">Verwijder</button><button class="bcan" id="ec">Annuleer</button></div>`);
   let st=t.status,pr=t.priority,assignee=t.assignee||'';
@@ -374,7 +373,6 @@ function showEdit(id){
     if(!gcalToken){gcalConnect();return}
     const u=getFormData();saveTask(id,u);gcalCreateEvent(u);
   });
-  bg.querySelector('#ecb').addEventListener('click',()=>{const u=getFormData();saveTask(id,u);dlOne(id)});
   bg.querySelector('#es').addEventListener('click',()=>{saveTask(id,getFormData());closeM()});
   bg.querySelector('#edl').addEventListener('click',()=>{if(!confirm('Verwijderen?'))return;removeTask(id);closeM()});
   bg.querySelector('#ec').addEventListener('click',closeM);
@@ -571,16 +569,15 @@ function rTimeline(){
   const unp=all.filter(t=>!t.planned&&t.status!=="done");
   let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Planning</h2><div style="display:flex;gap:8px;flex-wrap:wrap">
     ${pl.length&&gcalToken?`<button class="btn-cal" style="border-color:rgba(66,133,244,0.3);background:rgba(66,133,244,0.08);color:#8AB4F8" data-action="gcal-sync-all">📅 Alles naar Google Agenda</button>`:''}
-    ${pl.length?`<button class="btn-cal" data-action="export-all">📥 Exporteer .ics</button>`:''}
   </div></div>
   <div class="gcal-bar${gcalToken?' connected':''}">
     <span>${gcalToken?'✓ Verbonden met Google Agenda':'Google Agenda niet verbonden'}</span>
     <button class="gcal-connect-btn" data-action="${gcalToken?'gcal-disconnect':'gcal-connect'}">${gcalToken?'Loskoppelen':'Verbinden'}</button>
   </div>`;
   if(!pl.length)h+=`<div class="empty-state"><p style="font-size:15px">Nog geen klussen ingepland</p></div>`;
-  else pl.forEach(t=>{h+=`<div class="trow"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.planned_time?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.planned_time}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}${t.spT?`<span style="font-size:10px;color:#777;margin-left:4px">/ ${esc(t.spT)}</span>`:''}</div><span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span>
-    <button class="ics-btn" data-action="gcal-add" data-id="${t.id}" title="Naar Google Agenda" ${!gcalToken?'style="opacity:0.2"':''}>📅</button>
-    <button class="ics-btn" data-action="export-one" data-id="${t.id}" title=".ics">📥</button></div>`});
+  else pl.forEach(t=>{h+=`<div class="trow" data-action="edit" data-id="${t.id}" style="cursor:pointer"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.planned_time?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.planned_time}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}${t.spT?`<span style="font-size:10px;color:#777;margin-left:4px">/ ${esc(t.spT)}</span>`:''}</div><span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span>
+    ${t.assignee?`<span style="font-size:10px;padding:1px 6px;border-radius:4px;background:${t.assignee==='Stijn'?'rgba(91,123,178,0.15)':'rgba(197,91,122,0.15)'};color:${t.assignee==='Stijn'?'#8AB4F8':'#E091AB'}">${t.assignee}</span>`:''}
+    <button class="ics-btn" data-action="gcal-add" data-id="${t.id}" title="Naar Google Agenda" onclick="event.stopPropagation()" ${!gcalToken?'style="opacity:0.2"':''}>📅</button></div>`});
   if(unp.length)h+=`<div style="margin-top:24px"><h3 style="font-size:14px;color:#666;font-weight:500;margin-bottom:12px">Nog niet ingepland</h3><div style="display:flex;flex-wrap:wrap;gap:8px">${unp.map(t=>`<span class="chip" data-action="edit" data-id="${t.id}">${esc(t.title)}</span>`).join('')}</div></div>`;
   return h;
 }
@@ -611,8 +608,6 @@ function bind(){
         case'move-sp-down':moveSP(id,1);break;
         case'delete-sp':if(confirm('Subproject verwijderen? Taken worden losgekoppeld.'))removeSubproject(id);break;
         case'toggle-sp':collapsed[id]=!collapsed[id];render();break;
-        case'export-all':dlICS(tasks);break;
-        case'export-one':dlOne(id);break;
         case'gcal-connect':gcalConnect();break;
         case'gcal-disconnect':gcalToken=null;render();break;
         case'gcal-add':e.stopPropagation();{const t=findTask(id);if(t)gcalCreateEvent(t);}break;
