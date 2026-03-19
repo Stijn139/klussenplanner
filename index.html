@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klussenplanner</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 0%,#16213e 40%,#1a1a2e 100%);color:#E8E4DF;min-height:100vh}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+.header{padding:28px 32px 20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.header h1{font-family:'Playfair Display',serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#F0C27F,#D4763C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
+.subtitle{margin-top:4px;font-size:13px;color:#8B8A8A;font-weight:300}
+.pbar{display:inline-block;margin-left:12px;width:100px;height:4px;border-radius:2px;background:rgba(255,255,255,0.08);position:relative;vertical-align:middle}
+.pfill{position:absolute;left:0;top:0;height:4px;border-radius:2px;background:linear-gradient(90deg,#D4763C,#F0C27F);transition:width 0.4s}
+.nav-btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(255,255,255,0.04);color:#8B8A8A;transition:all 0.2s}
+.nav-btn.active{background:rgba(212,118,60,0.2);color:#F0C27F}
+.fs-btn{padding:7px 12px;border-radius:8px;border:none;cursor:pointer;font-size:16px;font-family:inherit;background:rgba(255,255,255,0.04);color:#8B8A8A;margin-left:4px}
+.main{padding:24px 32px;max-width:1100px;margin:0 auto}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.fbtn{padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-family:inherit;background:transparent;color:#666}
+.fbtn.active{background:rgba(255,255,255,0.1);color:#E8E4DF}
+.btn-p{padding:7px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#D4763C,#E8A94A);color:#1a1a2e}
+.btn-cal{padding:7px 16px;border-radius:8px;border:1px solid rgba(91,123,178,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(91,123,178,0.08);color:#7BA3D4;display:inline-flex;align-items:center;gap:6px}
+.btn-cal:hover{background:rgba(91,123,178,0.15)}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:768px){.kanban{grid-template-columns:1fr}}
+.kcol{background:rgba(255,255,255,0.02);border-radius:14px;padding:16px;min-height:200px;border:1px solid rgba(255,255,255,0.04)}
+.ch{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.tc{padding:12px 14px;margin-bottom:8px;border-radius:10px;cursor:pointer;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);transition:all 0.2s}
+.tc:hover{background:rgba(255,255,255,0.06)}
+.tc.done{opacity:0.5}
+.stitle{font-family:'Playfair Display',serif;font-weight:700;color:#D4C4B0}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.pcard{background:rgba(255,255,255,0.03);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.pcard:hover{filter:brightness(1.1)}
+.pacc{width:4px;height:100%;position:absolute;left:0;top:0;border-radius:14px 0 0 14px}
+.addcard{background:rgba(255,255,255,0.02);border-radius:14px;padding:20px;border:1px dashed rgba(255,255,255,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#555;font-size:14px;min-height:100px}
+.addcard:hover{border-color:rgba(255,255,255,0.2)}
+.trow{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.04);margin-bottom:8px}
+.ics-btn{background:none;border:none;cursor:pointer;padding:2px 6px;font-size:14px;opacity:0.4;transition:opacity 0.2s}
+.ics-btn:hover{opacity:1}
+.chip{font-size:12px;padding:5px 12px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,0.03);color:#888;border:1px solid rgba(255,255,255,0.05)}
+.chip:hover{background:rgba(255,255,255,0.06)}
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal{background:#1e2340;border-radius:18px;padding:28px;width:100%;max-width:440px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.5);max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:20px;font-size:18px;font-family:'Playfair Display',serif;color:#D4C4B0}
+.modal label{font-size:12px;color:#888;display:block;margin-bottom:6px;font-weight:500}
+.mi{width:100%;padding:10px 14px;border-radius:10px;font-size:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#E8E4DF;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:14px;color-scheme:dark;box-sizing:border-box}
+textarea.mi{resize:vertical}
+.prio-row{display:flex;gap:8px;margin-bottom:14px}
+.pbtn{flex:1;padding:8px 0;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;font-weight:500;background:rgba(255,255,255,0.04);color:#666}
+.date-time-row{display:flex;gap:12px;margin-bottom:14px}
+.date-time-row>div{flex:1}
+.colors{display:flex;gap:8px;margin-bottom:20px}
+.cdot{width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent}
+.cdot.act{border-color:white}
+.brow{display:flex;gap:10px;margin-top:6px}
+.brow button{flex:1}
+.bsave{padding:10px 0;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#D4763C,#E8A94A);color:#1a1a2e}
+.bdel{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-family:inherit;background:rgba(232,93,74,0.12);color:#E85D4A}
+.bcan{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-family:inherit;background:rgba(255,255,255,0.04);color:#888}
+.bcal-full{width:100%;padding:10px 0;border-radius:10px;border:1px solid rgba(91,123,178,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(91,123,178,0.08);color:#7BA3D4;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.backbtn{background:none;border:none;color:#8B8A8A;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-bottom:16px}
+.reset{background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:inherit}
+.footer{text-align:center;padding:40px 0 24px}
+.tag{font-size:11px;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,0.04);color:#AAA;display:inline-block;margin:2px 4px 2px 0}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const SK="klussenplanner-standalone",ST={todo:"Te doen",doing:"Bezig",done:"Klaar"},PR={high:"Hoog",medium:"Midden",low:"Laag"},PC={high:"#E85D4A",medium:"#E8A94A",low:"#6BA368"},SI={todo:"○",doing:"◑",done:"●"},SC={todo:"#8B8A8A",doing:"#E8A94A",done:"#6BA368"};
+const DD={tasks:[
+{id:"t1",title:"Plaatsen garderobekast",status:"todo",priority:"medium",planned:"",plannedTime:"",notes:"",order:0},
+{id:"t2",title:"Openslaande taatsdeuren entree-woonkamer",status:"todo",priority:"high",planned:"",plannedTime:"",notes:"",order:1},
+{id:"t3",title:"Glazen deur tweede slaapkamer",status:"todo",priority:"medium",planned:"",plannedTime:"",notes:"",order:2},
+{id:"t4",title:"Ophangen gordijnen en plissé gordijnen",status:"todo",priority:"medium",planned:"",plannedTime:"",notes:"",order:3},
+{id:"t5",title:"LED-strips plaatsen met Sebas",status:"todo",priority:"low",planned:"",plannedTime:"",notes:"Samen met Sebas",order:4},
+{id:"t6",title:"Klapperende leiding laten oplossen door Tony",status:"todo",priority:"high",planned:"",plannedTime:"",notes:"Tony inschakelen",order:5},
+{id:"t7",title:"Meubel voor draaitafels incl. boekenkast",status:"todo",priority:"medium",planned:"",plannedTime:"",notes:"",order:6},
+{id:"t8",title:"Plafondlamp slaapkamer",status:"todo",priority:"low",planned:"",plannedTime:"",notes:"",order:7},
+{id:"t9",title:"Plafondlamp tweede slaapkamer",status:"todo",priority:"low",planned:"",plannedTime:"",notes:"",order:8}
+],projects:[
+{id:"p1",title:"Voordeur",description:"Complete renovatie van de voordeur",color:"#D4763C",tasks:[
+{id:"pt1",title:"Slot vervangen met Daan",status:"todo",priority:"high",planned:"",plannedTime:"",notes:"Samen met Daan",order:0},
+{id:"pt2",title:"Nieuwe deurbel",status:"todo",priority:"medium",planned:"",plannedTime:"",notes:"",order:1},
+{id:"pt3",title:"Brievenbus",status:"todo",priority:"medium",planned:"",plannedTime:"",notes:"",order:2},
+{id:"pt4",title:"Opnieuw schuren en beitsen",status:"todo",priority:"high",planned:"",plannedTime:"",notes:"",order:3},
+{id:"pt5",title:"Tochtstrips",status:"todo",priority:"low",planned:"",plannedTime:"",notes:"",order:4}
+]},
+{id:"p2",title:"Tuin",description:"Groot tuinproject — voorbereiding en uitvoering",color:"#4A7C59",tasks:[]}
+],nextId:20};
+
+let D,V="board",SP=null,F="all";
+function load(){try{const r=localStorage.getItem(SK);D=r?JSON.parse(r):JSON.parse(JSON.stringify(DD))}catch{D=JSON.parse(JSON.stringify(DD))}}
+function save(){try{localStorage.setItem(SK,JSON.stringify(D))}catch(e){console.error(e)}}
+function uid(){D.nextId++;return"id_"+D.nextId}
+function fd(d){if(!d)return"";return new Date(d+"T00:00:00").toLocaleDateString("nl-NL",{day:"numeric",month:"short",year:"numeric"})}
+function ov(d){return d?new Date(d+"T00:00:00")<new Date(new Date().toDateString()):false}
+function ga(){return[...D.tasks.map(t=>({...t,pId:null,pT:null,pC:null})),...D.projects.flatMap(p=>p.tasks.map(t=>({...t,pId:p.id,pT:p.title,pC:p.color})))]}
+function cs(id,pid){const o=["todo","doing","done"];let t;if(pid){const p=D.projects.find(p=>p.id===pid);t=p?.tasks.find(t=>t.id===id)}else t=D.tasks.find(t=>t.id===id);if(t)t.status=o[(o.indexOf(t.status)+1)%3];save();R()}
+
+// ICS generation with time support
+function mkICS(tasks){
+  const p2=n=>String(n).padStart(2,'0');
+  const toD=d=>d.replace(/-/g,'');
+  const nxt=d=>{const dt=new Date(d+"T00:00:00");dt.setDate(dt.getDate()+1);return dt.getFullYear()+p2(dt.getMonth()+1)+p2(dt.getDate())};
+  let s="BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Klussenplanner//NL\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
+  tasks.forEach(t=>{
+    if(!t.planned)return;
+    s+="BEGIN:VEVENT\r\n";
+    if(t.plannedTime){
+      // Timed event (1 hour duration)
+      const h=parseInt(t.plannedTime.split(':')[0]),m=parseInt(t.plannedTime.split(':')[1]);
+      const eh=h+1;
+      s+="DTSTART;TZID=Europe/Amsterdam:"+toD(t.planned)+"T"+p2(h)+p2(m)+"00\r\n";
+      s+="DTEND;TZID=Europe/Amsterdam:"+toD(t.planned)+"T"+p2(eh)+p2(m)+"00\r\n";
+    } else {
+      // All-day event
+      s+="DTSTART;VALUE=DATE:"+toD(t.planned)+"\r\n";
+      s+="DTEND;VALUE=DATE:"+nxt(t.planned)+"\r\n";
+    }
+    s+="SUMMARY:🔨 "+t.title.replace(/[,;\\]/g,' ')+"\r\n";
+    if(t.notes)s+="DESCRIPTION:"+t.notes.replace(/\n/g,'\\n').replace(/[,;\\]/g,' ')+"\r\n";
+    if(t.pT)s+="CATEGORIES:"+t.pT+"\r\n";
+    s+="STATUS:CONFIRMED\r\nUID:"+t.id+"@klussenplanner\r\nEND:VEVENT\r\n";
+  });
+  return s+"END:VCALENDAR\r\n";
+}
+function dlICS(tasks){
+  const pl=tasks.filter(t=>t.planned&&t.status!=="done");
+  if(!pl.length){alert("Geen geplande klussen om te exporteren.");return}
+  const b=new Blob([mkICS(pl)],{type:"text/calendar;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="klussenplanner.ics";a.click();
+}
+function dlOne(t){
+  const b=new Blob([mkICS([t])],{type:"text/calendar;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=t.title.replace(/[^a-zA-Z0-9]/g,'_')+".ics";a.click();
+}
+
+function toggleFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+
+// Modal helpers
+function showM(h){const bg=document.createElement("div");bg.className="mbg";bg.onclick=e=>{if(e.target===bg)bg.remove()};bg.innerHTML='<div class="modal">'+h+'</div>';document.body.appendChild(bg);const f=bg.querySelector("input,textarea");if(f)f.focus();return bg}
+function closeM(){document.querySelector(".mbg")?.remove()}
+
+function showEdit(task,pid){
+  const bg=showM(`<h3>Klus bewerken</h3>
+    <label>Titel</label><input class="mi" id="et" value="${task.title.replace(/"/g,'&quot;')}">
+    <label>Prioriteit</label><div class="prio-row">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${task.priority===k?PC[k]+'22':'rgba(255,255,255,0.04)'};color:${task.priority===k?PC[k]:'#666'}">${v}</button>`).join("")}</div>
+    <div class="date-time-row"><div><label>Datum</label><input type="date" class="mi" id="ed" value="${task.planned||''}"></div><div><label>Tijdstip</label><input type="time" class="mi" id="etm" value="${task.plannedTime||''}"></div></div>
+    <label>Notities</label><textarea class="mi" id="en" rows="3">${task.notes||''}</textarea>
+    <div id="ecr" style="${task.planned?'':'display:none'}"><button class="bcal-full" id="ecb">📅 Download .ics voor Google Agenda</button></div>
+    <div class="brow"><button class="bsave" id="es">Opslaan</button><button class="bdel" id="edl">Verwijder</button><button class="bcan" id="ec">Annuleer</button></div>`);
+  let pr=task.priority;
+  bg.querySelectorAll(".pbtn").forEach(b=>{b.onclick=()=>{pr=b.dataset.p;bg.querySelectorAll(".pbtn").forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})}});
+  bg.querySelector("#ed").onchange=function(){bg.querySelector("#ecr").style.display=this.value?'':'none'};
+  bg.querySelector("#ecb").onclick=()=>{const t={...task,title:bg.querySelector("#et").value,planned:bg.querySelector("#ed").value,plannedTime:bg.querySelector("#etm").value,notes:bg.querySelector("#en").value};if(t.planned)dlOne(t)};
+  bg.querySelector("#es").onclick=()=>{let t;if(pid){const p=D.projects.find(p=>p.id===pid);t=p?.tasks.find(x=>x.id===task.id)}else t=D.tasks.find(x=>x.id===task.id);if(t){t.title=bg.querySelector("#et").value;t.priority=pr;t.planned=bg.querySelector("#ed").value;t.plannedTime=bg.querySelector("#etm").value;t.notes=bg.querySelector("#en").value}save();closeM();R()};
+  bg.querySelector("#edl").onclick=()=>{if(pid){const p=D.projects.find(p=>p.id===pid);if(p)p.tasks=p.tasks.filter(x=>x.id!==task.id)}else D.tasks=D.tasks.filter(x=>x.id!==task.id);save();closeM();R()};
+  bg.querySelector("#ec").onclick=closeM;
+}
+
+function showAdd(pid){
+  const bg=showM(`<h3>${pid?'Projecttaak toevoegen':'Nieuwe klus'}</h3>
+    <label>Titel</label><input class="mi" id="at" placeholder="Wat moet er gebeuren?">
+    <label>Prioriteit</label><div class="prio-row">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${k==='medium'?PC.medium+'22':'rgba(255,255,255,0.04)'};color:${k==='medium'?PC.medium:'#666'}">${v}</button>`).join("")}</div>
+    <div class="date-time-row"><div><label>Datum</label><input type="date" class="mi" id="ad"></div><div><label>Tijdstip</label><input type="time" class="mi" id="atm"></div></div>
+    <label>Notities</label><textarea class="mi" id="an" rows="2" placeholder="Bijv. wie helpt mee..."></textarea>
+    <div class="brow"><button class="bsave" id="as">Toevoegen</button><button class="bcan" id="ac">Annuleer</button></div>`);
+  let pr="medium";
+  bg.querySelectorAll(".pbtn").forEach(b=>{b.onclick=()=>{pr=b.dataset.p;bg.querySelectorAll(".pbtn").forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})}});
+  bg.querySelector("#as").onclick=()=>{const ti=bg.querySelector("#at").value.trim();if(!ti)return;const t={id:uid(),title:ti,status:"todo",priority:pr,planned:bg.querySelector("#ad").value,plannedTime:bg.querySelector("#atm").value,notes:bg.querySelector("#an").value,order:999};if(pid){const p=D.projects.find(p=>p.id===pid);if(p){t.order=p.tasks.length;p.tasks.push(t)}}else{t.order=D.tasks.length;D.tasks.push(t)}save();closeM();R()};
+  bg.querySelector("#ac").onclick=closeM;
+}
+
+function showAddProj(){
+  const cl=["#D4763C","#4A7C59","#5B7BB2","#9B5BA5","#C75B7A","#7BA3A3","#B8860B"];
+  const bg=showM(`<h3>Nieuw project</h3>
+    <label>Projectnaam</label><input class="mi" id="pt" placeholder="Bijv. Tuin, Badkamer...">
+    <label>Beschrijving</label><textarea class="mi" id="pd" rows="2" placeholder="Kort overzicht"></textarea>
+    <label>Kleur</label><div class="colors">${cl.map((c,i)=>`<div class="cdot ${i===2?'act':''}" data-c="${c}" style="background:${c}"></div>`).join("")}</div>
+    <div class="brow"><button class="bsave" id="ps">Aanmaken</button><button class="bcan" id="pc">Annuleer</button></div>`);
+  let co=cl[2];
+  bg.querySelectorAll(".cdot").forEach(d=>{d.onclick=()=>{co=d.dataset.c;bg.querySelectorAll(".cdot").forEach(x=>x.classList.toggle("act",x.dataset.c===co))}});
+  bg.querySelector("#ps").onclick=()=>{const ti=bg.querySelector("#pt").value.trim();if(!ti)return;D.projects.push({id:uid(),title:ti,description:bg.querySelector("#pd").value,color:co,tasks:[]});save();closeM();R()};
+  bg.querySelector("#pc").onclick=closeM;
+}
+
+// Render
+function R(){
+  const all=ga(),dc=all.filter(t=>t.status==="done").length,pct=all.length?(dc/all.length)*100:0;
+  let h=`<div class="header"><div><h1>Klussenplanner</h1><p class="subtitle">${dc} / ${all.length} klaar <span class="pbar"><span class="pfill" style="width:${pct}%"></span></span></p></div>
+  <div style="display:flex;gap:6px;align-items:center">
+    <button class="nav-btn ${V==='board'?'active':''}" onclick="V='board';SP=null;R()">Overzicht</button>
+    <button class="nav-btn ${V==='projects'?'active':''}" onclick="V='projects';SP=null;R()">Projecten</button>
+    <button class="nav-btn ${V==='timeline'?'active':''}" onclick="V='timeline';SP=null;R()">Planning</button>
+    <button class="fs-btn" onclick="toggleFS()" title="Fullscreen">⛶</button>
+  </div></div><div class="main">`;
+
+  if(V==="board"&&!SP) h+=rBoard()+rProjCards();
+  else if(V==="projects"&&SP) h+=rProjDet();
+  else if(V==="projects"&&!SP) h+=rProjList();
+  else if(V==="timeline") h+=rTimeline();
+
+  h+=`</div><div class="footer"><button class="reset" onclick="if(confirm('Reset?')){localStorage.removeItem('${SK}');D=JSON.parse(JSON.stringify(DD));V='board';SP=null;F='all';R()}">Reset naar beginstand</button></div>`;
+  document.getElementById("app").innerHTML=h;
+}
+
+function rTC(t,pid){
+  const dn=t.status==="done";
+  return`<div class="tc${dn?' done':''}" onclick='showEdit(${JSON.stringify(t).replace(/'/g,"\\'")},"${pid||''}")'>
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <button onclick="event.stopPropagation();cs('${t.id}',${pid?"'"+pid+"'":"null"})" style="background:none;border:none;cursor:pointer;padding:0;margin-top:2px;font-size:16px;line-height:1;color:${SC[t.status]}">${SI[t.status]}</button>
+      <div style="flex:1"><span style="font-size:13px;font-weight:500;${dn?'text-decoration:line-through;color:#777':'color:#E8E4DF'}">${t.title}</span>
+        <div style="display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap">
+          <span style="font-size:10px;padding:1px 7px;border-radius:4px;background:${PC[t.priority]}15;color:${PC[t.priority]}">${PR[t.priority]}</span>
+          ${t.planned?`<span style="font-size:10px;color:${ov(t.planned)&&!dn?'#E85D4A':'#666'}">${fd(t.planned)}${t.plannedTime?' '+t.plannedTime:''}</span>`:''}
+          ${t.notes?'<span style="font-size:10px;color:#555">📝</span>':''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function rBoard(){
+  const ts=F==="all"?D.tasks:D.tasks.filter(t=>t.priority===F);
+  let h=`<div class="toolbar"><div style="display:flex;gap:6px">${["all","high","medium","low"].map(f=>`<button class="fbtn ${F===f?'active':''}" ${F===f&&f!=="all"?`style="background:${PC[f]}22;color:${PC[f]}"`:''} onclick="F='${f}';R()">${f==="all"?"Alle":PR[f]}</button>`).join("")}</div><button class="btn-p" onclick="showAdd(null)">+ Nieuwe klus</button></div><div class="kanban">`;
+  for(const[k,l]of Object.entries(ST)){
+    const c=ts.filter(t=>t.status===k).sort((a,b)=>a.order-b.order);
+    h+=`<div class="kcol"><div class="ch"><span style="font-size:16px;color:${SC[k]}">${SI[k]}</span><span style="font-size:13px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:0.5px">${l}</span><span style="font-size:11px;color:#555;margin-left:auto">${c.length}</span></div>${c.map(t=>rTC(t,null)).join("")}</div>`;
+  }
+  return h+`</div>`;
+}
+
+function rProjCards(){
+  let h=`<h2 class="stitle" style="font-size:20px;margin-top:36px;margin-bottom:14px">Projecten</h2><div class="pgrid">`;
+  D.projects.forEach(p=>{const d=p.tasks.filter(t=>t.status==="done").length,tt=p.tasks.length,pc=tt?(d/tt)*100:0;
+    h+=`<div class="pcard" style="border:1px solid ${p.color}33" onclick="SP='${p.id}';V='projects';R()"><div class="pacc" style="background:${p.color}"></div><h3 style="margin:0;font-size:16px;font-weight:600;color:${p.color}">${p.title}</h3><p style="margin:6px 0 0;font-size:12px;color:#777">${p.description}</p><div style="margin-top:12px;display:flex;align-items:center;gap:8px"><div style="flex:1;height:3px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="height:3px;border-radius:2px;background:${p.color};width:${pc}%"></div></div><span style="font-size:11px;color:#666">${d}/${tt}</span></div></div>`;
+  });
+  return h+`<div class="addcard" onclick="showAddProj()">+ Nieuw project</div></div>`;
+}
+
+function rProjDet(){
+  const p=D.projects.find(x=>x.id===SP);if(!p)return"";
+  let h=`<button class="backbtn" onclick="SP=null;R()">← Terug</button>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px"><div style="width:6px;height:40px;border-radius:3px;background:${p.color}"></div><div><h2 class="stitle" style="font-size:24px;color:${p.color}">${p.title}</h2><p style="margin:4px 0 0;font-size:13px;color:#777">${p.description}</p></div><button class="bdel" style="margin-left:auto;padding:6px 14px;border-radius:8px;font-size:12px" onclick="if(confirm('Project verwijderen?')){D.projects=D.projects.filter(p=>p.id!=='${p.id}');save();SP=null;R()}">Verwijder</button></div><div class="kanban">`;
+  for(const[k,l]of Object.entries(ST)){const c=p.tasks.filter(t=>t.status===k);
+    h+=`<div class="kcol"><div class="ch"><span style="font-size:16px;color:${SC[k]}">${SI[k]}</span><span style="font-size:13px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:0.5px">${l}</span><span style="font-size:11px;color:#555;margin-left:auto">${c.length}</span></div>${c.map(t=>rTC(t,p.id)).join("")}</div>`}
+  return h+`</div><button class="btn-cal" style="margin-top:16px;border-color:${p.color}44;background:${p.color}11;color:${p.color}" onclick="showAdd('${p.id}')">+ Taak toevoegen</button>`;
+}
+
+function rProjList(){
+  let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Projecten</h2><button class="btn-p" onclick="showAddProj()">+ Nieuw project</button></div>`;
+  D.projects.forEach(p=>{const d=p.tasks.filter(t=>t.status==="done").length,tt=p.tasks.length;
+    h+=`<div style="background:rgba(255,255,255,0.03);border-radius:14px;padding:24px;border:1px solid ${p.color}33;cursor:pointer;position:relative;overflow:hidden;margin-bottom:14px" onclick="SP='${p.id}';R()"><div class="pacc" style="background:${p.color}"></div><div style="display:flex;justify-content:space-between"><div><h3 style="margin:0;font-size:18px;font-weight:600;color:${p.color}">${p.title}</h3><p style="margin:6px 0 0;font-size:13px;color:#777">${p.description}</p></div><span style="font-size:13px;color:#666">${d}/${tt} klaar</span></div><div style="margin-top:16px">${p.tasks.filter(t=>t.status!=="done").slice(0,5).map(t=>`<span class="tag">${t.title}</span>`).join("")}</div></div>`});
+  return h;
+}
+
+function rTimeline(){
+  const all=ga(),pl=all.filter(t=>t.planned&&t.status!=="done").sort((a,b)=>a.planned===b.planned?(a.plannedTime||"99:99").localeCompare(b.plannedTime||"99:99"):a.planned.localeCompare(b.planned));
+  const unp=all.filter(t=>!t.planned&&t.status!=="done");
+  let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Planning</h2>${pl.length?`<button class="btn-cal" onclick="dlICS(ga())">📅 Exporteer alles (.ics)</button>`:''}</div>`;
+  if(!pl.length) h+=`<div style="text-align:center;padding:60px;color:#555"><p style="font-size:15px">Nog geen klussen ingepland</p><p style="font-size:12px;color:#444">Klik op een klus en vul een datum in</p></div>`;
+  else pl.forEach(t=>{
+    h+=`<div class="trow"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.plannedTime?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.plannedTime}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${t.title}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${t.pT}</span>`:''}</div><span style="font-size:11px;padding:2px 8px;border-radius:4px;background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span><button class="ics-btn" onclick="event.stopPropagation();dlOne(${JSON.stringify(t).replace(/"/g,'&quot;')})" title="Download .ics">📅</button></div>`;
+  });
+  if(unp.length){h+=`<div style="margin-top:24px"><h3 style="font-size:14px;color:#666;font-weight:500;margin-bottom:12px">Nog niet ingepland</h3><div style="display:flex;flex-wrap:wrap;gap:8px">${unp.map(t=>`<span class="chip" onclick='showEdit(${JSON.stringify(t).replace(/'/g,"\\'")},"${t.pId||''}")'>${t.title}</span>`).join("")}</div></div>`}
+  return h;
+}
+
+load();R();
+</script>
+</body>
+</html>
