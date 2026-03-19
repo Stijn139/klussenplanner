@@ -1,6 +1,6 @@
-# 🔨 Klussenplanner
+# 🔨 Klusplanner
 
-Een persoonlijke klussenplanner voor het bijhouden en plannen van klussen en verbouwingsprojecten.
+Een persoonlijke klusplanner voor het bijhouden en plannen van klussen en verbouwingsprojecten.
 
 ## Features
 
