@@ -7,6 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔨</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 0%,#16213e 40%,#1a1a2e 100%);color:#E8E4DF;min-height:100vh}
@@ -108,6 +109,39 @@ textarea.mi{resize:vertical}
 .btn-danger{padding:6px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;background:rgba(232,93,74,0.1);color:#E85D4A}
 .empty-state{text-align:center;padding:60px;color:#555}
 .loading-screen{display:flex;align-items:center;justify-content:center;height:100vh;font-size:15px;color:#888;gap:10px}
+.gcal-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;margin:-8px -16px 16px;border-radius:10px;background:rgba(66,133,244,0.06);border:1px solid rgba(66,133,244,0.15);font-size:12px;color:#8AB4F8}
+.gcal-bar.connected{background:rgba(107,163,104,0.06);border-color:rgba(107,163,104,0.15);color:#6BA368}
+.gcal-connect-btn{padding:5px 14px;border-radius:6px;border:1px solid rgba(66,133,244,0.3);cursor:pointer;font-size:12px;font-family:inherit;font-weight:500;background:rgba(66,133,244,0.1);color:#8AB4F8;margin-left:auto}
+.gcal-connect-btn:hover{background:rgba(66,133,244,0.2)}
+.btn-gcal-add{width:100%;padding:10px 0;border-radius:10px;border:1px solid rgba(66,133,244,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(66,133,244,0.08);color:#8AB4F8;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-gcal-add:hover{background:rgba(66,133,244,0.15)}
+.btn-gcal-add:disabled{opacity:0.4;cursor:default}
+/* Responsive mobile */
+@media(max-width:600px){
+  .header{padding:16px 16px 14px}
+  .header h1{font-size:24px}
+  .main{padding:16px}
+  .nav-btn{padding:6px 10px;font-size:12px}
+  .fs-btn{display:none}
+  .toolbar{flex-direction:column;align-items:stretch;gap:10px}
+  .filter-btns{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;flex-wrap:nowrap}
+  .fbtn{white-space:nowrap;flex-shrink:0}
+  .kanban{grid-template-columns:1fr!important;gap:12px}
+  .kcol{min-height:auto;padding:12px}
+  .pgrid{grid-template-columns:1fr}
+  .tc{padding:10px 12px}
+  .trow{flex-wrap:wrap;gap:8px;padding:12px 14px}
+  .trow>div:first-child{min-width:auto!important;width:100%}
+  .sp-header{padding:12px 14px;flex-wrap:wrap;gap:6px}
+  .sp-actions{margin-left:0;width:100%;justify-content:flex-end}
+  .sp-body{padding:0 8px 12px}
+  .modal{padding:20px;max-width:calc(100vw - 32px);border-radius:14px}
+  .dt-row{flex-direction:column;gap:0}
+  .brow{flex-wrap:wrap}
+  .brow button{min-width:0}
+  .proj-list-card{padding:16px}
+  .btn-p{width:100%;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -116,6 +150,85 @@ textarea.mi{resize:vertical}
 const SB_URL="https://uzokzfvtwxfmdhogapzq.supabase.co";
 const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6b2t6ZnZ0d3hmbWRob2dhcHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTYwMDAsImV4cCI6MjA4OTQ5MjAwMH0.qUB259Hh_j4UViq8MymS5DqgPg3TYCdxjUFxj0Jd29Y";
 const sb=supabase.createClient(SB_URL,SB_KEY);
+
+// ============ GOOGLE CALENDAR API ============
+const GCAL_CLIENT_ID="821933682000-b19oj1up19ma8fgv5bisb1cm8e80cicp.apps.googleusercontent.com";
+const GCAL_SCOPES="https://www.googleapis.com/auth/calendar.events";
+let gcalToken=null;
+let tokenClient=null;
+
+function initGCal(){
+  try{
+    tokenClient=google.accounts.oauth2.initTokenClient({
+      client_id:GCAL_CLIENT_ID,
+      scope:GCAL_SCOPES,
+      callback:(resp)=>{
+        if(resp.error)return console.error("GCal auth error:",resp);
+        gcalToken=resp.access_token;
+        render();
+      }
+    });
+  }catch(e){console.error("GCal init error:",e)}
+}
+
+function gcalConnect(){
+  if(!tokenClient)initGCal();
+  if(tokenClient)tokenClient.requestAccessToken({prompt:'consent'});
+}
+
+async function gcalCreateEvent(task){
+  if(!gcalToken){gcalConnect();return}
+  const ev={summary:"🔨 "+task.title};
+  if(task.planned&&task.planned_time){
+    ev.start={dateTime:task.planned+"T"+task.planned_time+":00",timeZone:"Europe/Amsterdam"};
+    const[h,m]=task.planned_time.split(':').map(Number);
+    const eh=String(h+1).padStart(2,'0')+":"+String(m).padStart(2,'0');
+    ev.end={dateTime:task.planned+"T"+eh+":00",timeZone:"Europe/Amsterdam"};
+  }else if(task.planned){
+    ev.start={date:task.planned};
+    const nd=new Date(task.planned+"T00:00:00");nd.setDate(nd.getDate()+1);
+    const p2=n=>String(n).padStart(2,'0');
+    ev.end={date:nd.getFullYear()+"-"+p2(nd.getMonth()+1)+"-"+p2(nd.getDate())};
+  }else return;
+  if(task.notes)ev.description=task.notes;
+  try{
+    const res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",{
+      method:"POST",
+      headers:{"Authorization":"Bearer "+gcalToken,"Content-Type":"application/json"},
+      body:JSON.stringify(ev)
+    });
+    if(res.status===401){gcalToken=null;gcalConnect();return}
+    if(!res.ok){const e=await res.text();console.error("GCal error:",e);alert("Fout bij aanmaken agenda-item. Probeer opnieuw.");return}
+    const data=await res.json();
+    alert("✅ Toegevoegd aan Google Agenda:\n"+task.title+(task.planned?" op "+fd(task.planned):""));
+  }catch(e){console.error(e);alert("Fout bij verbinding met Google Agenda.")}
+}
+
+async function gcalCreateAll(taskList){
+  if(!gcalToken){gcalConnect();return}
+  let ok=0,fail=0;
+  for(const t of taskList){
+    if(!t.planned||t.status==="done")continue;
+    try{
+      const ev={summary:"🔨 "+t.title};
+      if(t.planned&&t.planned_time){
+        ev.start={dateTime:t.planned+"T"+t.planned_time+":00",timeZone:"Europe/Amsterdam"};
+        const[h,m]=t.planned_time.split(':').map(Number);
+        ev.end={dateTime:t.planned+"T"+String(h+1).padStart(2,'0')+":"+String(m).padStart(2,'0')+":00",timeZone:"Europe/Amsterdam"};
+      }else{
+        ev.start={date:t.planned};const nd=new Date(t.planned+"T00:00:00");nd.setDate(nd.getDate()+1);const p2=n=>String(n).padStart(2,'0');
+        ev.end={date:nd.getFullYear()+"-"+p2(nd.getMonth()+1)+"-"+p2(nd.getDate())};
+      }
+      if(t.notes)ev.description=t.notes;
+      const res=await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events",{method:"POST",headers:{"Authorization":"Bearer "+gcalToken,"Content-Type":"application/json"},body:JSON.stringify(ev)});
+      if(res.ok)ok++;else fail++;
+    }catch(e){fail++}
+  }
+  alert(`✅ ${ok} klus${ok!==1?'sen':''} toegevoegd aan Google Agenda${fail?`\n⚠ ${fail} mislukt`:''}`);
+}
+
+// Init Google Calendar on page load
+setTimeout(initGCal,1000);
 const ST={todo:"Te doen",doing:"Bezig",done:"Klaar"},PR={high:"Hoog",medium:"Midden",low:"Laag"},PC={high:"#E85D4A",medium:"#E8A94A",low:"#6BA368"},SI={todo:"○",doing:"◑",done:"●"},SC={todo:"#8B8A8A",doing:"#E8A94A",done:"#6BA368"},STATUSES=["todo","doing","done"];
 
 let tasks=[],projects=[],subprojects=[],V="board",SP=null,F="all",PF=null,syncState="loading",idC=100,dragTaskId=null;
@@ -233,7 +346,10 @@ function showEdit(id){
     <div id="esp-wrap" style="${hasSps?'':'display:none'}"><label>Subproject</label><select class="mi" id="esp"><option value="">— Geen subproject —</option>${spOpts(t.project_id)}</select></div>
     <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ed" value="${t.planned||''}"></div><div><label>Tijdstip</label><input type="time" class="mi" id="etm" value="${t.planned_time||''}"></div></div>
     <label>Notities</label><textarea class="mi" id="en" rows="3">${esc(t.notes||'')}</textarea>
-    <div id="ecr" style="${t.planned?'':'display:none'}"><a class="bcal-full" id="gcl" href="${gcalUrl(t)}" target="_blank">📅 Toevoegen aan Google Agenda</a><button class="bics-full" id="ecb">📥 Download .ics</button></div>
+    <div id="ecr" style="${t.planned?'':'display:none'}">
+      <button class="btn-gcal-add" id="gcl-api" ${!gcalToken?'title="Eerst verbinden met Google Agenda"':''}>📅 ${gcalToken?'Toevoegen aan Google Agenda':'Verbind Google Agenda'}</button>
+      <button class="bics-full" id="ecb">📥 Download .ics bestand</button>
+    </div>
     <div class="brow"><button class="bsave" id="es">Opslaan</button><button class="bdel" id="edl">Verwijder</button><button class="bcan" id="ec">Annuleer</button></div>`);
   let st=t.status,pr=t.priority;
   bg.querySelector('#esr').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;st=b.dataset.s;bg.querySelectorAll('.sbtn').forEach(x=>{const k=x.dataset.s;x.style.background=k===st?SC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===st?SC[k]:'#666'})});
@@ -244,8 +360,13 @@ function showEdit(id){
     const sps=subprojects.filter(s=>s.project_id===pid);
     if(sps.length){wrap.style.display='';sel.innerHTML='<option value="">— Geen subproject —</option>'+sps.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}else{wrap.style.display='none';sel.innerHTML='<option value="">— Geen subproject —</option>'}
   });
-  function updCal(){const d=bg.querySelector('#ed').value;bg.querySelector('#ecr').style.display=d?'':'none';bg.querySelector('#gcl').href=gcalUrl({title:bg.querySelector('#et').value,planned:d,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value})}
+  function updCal(){const d=bg.querySelector('#ed').value;bg.querySelector('#ecr').style.display=d?'':'none';
+    const btn=bg.querySelector('#gcl-api');if(btn)btn.textContent=gcalToken?'📅 Toevoegen aan Google Agenda':'📅 Verbind Google Agenda'}
   bg.querySelector('#ed').addEventListener('change',updCal);bg.querySelector('#etm').addEventListener('change',updCal);bg.querySelector('#et').addEventListener('input',updCal);
+  bg.querySelector('#gcl-api').addEventListener('click',()=>{
+    if(!gcalToken){gcalConnect();return}
+    const u=getFormData();saveTask(id,u);gcalCreateEvent(u);
+  });
   bg.querySelector('#ecb').addEventListener('click',()=>{const u=getFormData();saveTask(id,u);dlOne(id)});
   bg.querySelector('#es').addEventListener('click',()=>{saveTask(id,getFormData());closeM()});
   bg.querySelector('#edl').addEventListener('click',()=>{if(!confirm('Verwijderen?'))return;removeTask(id);closeM()});
@@ -285,6 +406,38 @@ function showAddSP(pid){
   const bg=showM(`<h3>Nieuw subproject</h3><p style="font-size:12px;color:#888;margin-bottom:14px">Onder: ${esc(p?.title)}</p><label>Naam</label><input class="mi" id="spt" placeholder="Bijv. Voorbereiding, Fase 1..."><div class="brow"><button class="bsave" id="sps">Aanmaken</button><button class="bcan" id="spc">Annuleer</button></div>`);
   bg.querySelector('#sps').addEventListener('click',()=>{const ti=bg.querySelector('#spt').value.trim();if(!ti)return;addSubproject({id:uid(),title:ti,project_id:pid,color:'',task_order:subprojects.filter(s=>s.project_id===pid).length});closeM()});
   bg.querySelector('#spc').addEventListener('click',closeM);
+}
+
+function showEditProject(pid){
+  const p=projects.find(x=>x.id===pid);if(!p)return;
+  const cl=["#D4763C","#4A7C59","#5B7BB2","#9B5BA5","#C75B7A","#7BA3A3","#B8860B","#E85D4A","#E8A94A","#6BA368"];
+  const bg=showM(`<h3>Project bewerken</h3>
+    <label>Naam</label><input class="mi" id="ept" value="${esc(p.title)}">
+    <label>Beschrijving</label><textarea class="mi" id="epd" rows="2">${esc(p.description)}</textarea>
+    <label>Kleur</label>
+    <div class="colors" id="epcl">${cl.map(c=>`<div class="cdot${p.color===c?' act':''}" data-c="${c}" style="background:${c}"></div>`).join('')}</div>
+    <div class="brow"><button class="bsave" id="eps">Opslaan</button><button class="bdel" id="epd2">Verwijder</button><button class="bcan" id="epc">Annuleer</button></div>`);
+  let co=p.color;
+  bg.querySelector('#epcl').addEventListener('click',e=>{const d=e.target.closest('.cdot');if(!d)return;co=d.dataset.c;bg.querySelectorAll('.cdot').forEach(x=>x.classList.toggle('act',x.dataset.c===co))});
+  bg.querySelector('#eps').addEventListener('click',async()=>{p.title=bg.querySelector('#ept').value.trim()||p.title;p.description=bg.querySelector('#epd').value;p.color=co;render();await dbSaveP(p);closeM()});
+  bg.querySelector('#epd2').addEventListener('click',()=>{if(confirm('Project en alle taken verwijderen?')){removeProject(pid);closeM()}});
+  bg.querySelector('#epc').addEventListener('click',closeM);
+}
+
+async function moveSP(spid,dir){
+  const sp=subprojects.find(s=>s.id===spid);if(!sp)return;
+  const siblings=projSubprojects(sp.project_id);
+  const idx=siblings.findIndex(s=>s.id===spid);
+  const newIdx=idx+dir;
+  if(newIdx<0||newIdx>=siblings.length)return;
+  // Swap task_order values
+  const other=siblings[newIdx];
+  const tmpOrder=sp.task_order;
+  sp.task_order=other.task_order;
+  other.task_order=tmpOrder;
+  render();
+  await dbSaveSP(sp);
+  await dbSaveSP(other);
 }
 
 // ============ RENDER ============
@@ -346,6 +499,7 @@ function rProjDet(){
       <div style="width:6px;height:40px;border-radius:3px;background:${p.color}"></div>
       <div style="flex:1"><h2 class="stitle" style="font-size:24px;color:${p.color}">${esc(p.title)}</h2><p style="margin:4px 0 0;font-size:13px;color:#777">${esc(p.description)} · ${doneC}/${allPT.length} klaar</p></div>
       <div style="display:flex;gap:8px">
+        <button class="btn-sm" style="background:rgba(255,255,255,0.04);color:#D4C4B0;border:1px solid rgba(255,255,255,0.1)" data-action="edit-project" data-id="${p.id}">✎ Bewerken</button>
         <button class="btn-sm" style="background:${p.color}11;color:${p.color};border:1px solid ${p.color}44" data-action="add-sp" data-id="${p.id}">+ Subproject</button>
         <button class="btn-sm" style="background:${p.color}11;color:${p.color};border:1px solid ${p.color}44" data-action="add-task-project" data-id="${p.id}">+ Taak</button>
         <button class="btn-danger" data-action="delete-project" data-id="${p.id}">Verwijder</button>
@@ -363,6 +517,8 @@ function rProjDet(){
         <span style="font-size:11px;color:#666">${spDone}/${spt.length}</span>
         <div class="sp-progress"><div class="sp-progress-fill" style="background:${p.color};width:${spPct}%"></div></div>
         <div class="sp-actions">
+          <button class="btn-sm" style="background:rgba(255,255,255,0.04);color:#888;padding:3px 6px" data-action="move-sp-up" data-id="${sp.id}" onclick="event.stopPropagation()" title="Omhoog">▲</button>
+          <button class="btn-sm" style="background:rgba(255,255,255,0.04);color:#888;padding:3px 6px" data-action="move-sp-down" data-id="${sp.id}" onclick="event.stopPropagation()" title="Omlaag">▼</button>
           <button class="btn-sm" style="background:rgba(255,255,255,0.04);color:#888" data-action="add-task-sp" data-pid="${p.id}" data-spid="${sp.id}" onclick="event.stopPropagation()">+ Taak</button>
           <button class="btn-sm" style="background:rgba(232,93,74,0.08);color:#E85D4A" data-action="delete-sp" data-id="${sp.id}" onclick="event.stopPropagation()">✕</button>
         </div>
@@ -398,9 +554,18 @@ function rProjList(){
 function rTimeline(){
   const all=allFlat(),pl=all.filter(t=>t.planned&&t.status!=="done").sort((a,b)=>a.planned===b.planned?(a.planned_time||"99:99").localeCompare(b.planned_time||"99:99"):a.planned.localeCompare(b.planned));
   const unp=all.filter(t=>!t.planned&&t.status!=="done");
-  let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Planning</h2>${pl.length?`<button class="btn-cal" data-action="export-all">📥 Exporteer .ics</button>`:''}</div>`;
+  let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Planning</h2><div style="display:flex;gap:8px;flex-wrap:wrap">
+    ${pl.length&&gcalToken?`<button class="btn-cal" style="border-color:rgba(66,133,244,0.3);background:rgba(66,133,244,0.08);color:#8AB4F8" data-action="gcal-sync-all">📅 Alles naar Google Agenda</button>`:''}
+    ${pl.length?`<button class="btn-cal" data-action="export-all">📥 Exporteer .ics</button>`:''}
+  </div></div>
+  <div class="gcal-bar${gcalToken?' connected':''}">
+    <span>${gcalToken?'✓ Verbonden met Google Agenda':'Google Agenda niet verbonden'}</span>
+    <button class="gcal-connect-btn" data-action="${gcalToken?'gcal-disconnect':'gcal-connect'}">${gcalToken?'Loskoppelen':'Verbinden'}</button>
+  </div>`;
   if(!pl.length)h+=`<div class="empty-state"><p style="font-size:15px">Nog geen klussen ingepland</p></div>`;
-  else pl.forEach(t=>{h+=`<div class="trow"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.planned_time?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.planned_time}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}${t.spT?`<span style="font-size:10px;color:#777;margin-left:4px">/ ${esc(t.spT)}</span>`:''}</div><span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span><a class="ics-btn" href="${gcalUrl(t)}" target="_blank" onclick="event.stopPropagation()" title="Google Agenda">📅</a><button class="ics-btn" data-action="export-one" data-id="${t.id}" title=".ics">📥</button></div>`});
+  else pl.forEach(t=>{h+=`<div class="trow"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.planned_time?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.planned_time}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}${t.spT?`<span style="font-size:10px;color:#777;margin-left:4px">/ ${esc(t.spT)}</span>`:''}</div><span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span>
+    <button class="ics-btn" data-action="gcal-add" data-id="${t.id}" title="Naar Google Agenda" ${!gcalToken?'style="opacity:0.2"':''}>📅</button>
+    <button class="ics-btn" data-action="export-one" data-id="${t.id}" title=".ics">📥</button></div>`});
   if(unp.length)h+=`<div style="margin-top:24px"><h3 style="font-size:14px;color:#666;font-weight:500;margin-bottom:12px">Nog niet ingepland</h3><div style="display:flex;flex-wrap:wrap;gap:8px">${unp.map(t=>`<span class="chip" data-action="edit" data-id="${t.id}">${esc(t.title)}</span>`).join('')}</div></div>`;
   return h;
 }
@@ -426,10 +591,17 @@ function bind(){
         case'open-project':SP=id;V='projects';render();break;
         case'back':SP=null;render();break;
         case'delete-project':if(confirm('Project en alle taken verwijderen?'))removeProject(id);break;
+        case'edit-project':showEditProject(id);break;
+        case'move-sp-up':moveSP(id,-1);break;
+        case'move-sp-down':moveSP(id,1);break;
         case'delete-sp':if(confirm('Subproject verwijderen? Taken worden losgekoppeld.'))removeSubproject(id);break;
         case'toggle-sp':collapsed[id]=!collapsed[id];render();break;
         case'export-all':dlICS(tasks);break;
         case'export-one':dlOne(id);break;
+        case'gcal-connect':gcalConnect();break;
+        case'gcal-disconnect':gcalToken=null;render();break;
+        case'gcal-add':e.stopPropagation();{const t=findTask(id);if(t)gcalCreateEvent(t);}break;
+        case'gcal-sync-all':gcalCreateAll(tasks);break;
       }
     });
   });
