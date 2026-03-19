@@ -344,6 +344,12 @@ function showEdit(id){
     <label>Project</label>
     <select class="mi" id="epj"><option value="">— Geen project —</option>${projOpts}</select>
     <div id="esp-wrap" style="${hasSps?'':'display:none'}"><label>Subproject</label><select class="mi" id="esp"><option value="">— Geen subproject —</option>${spOpts(t.project_id)}</select></div>
+    <label>Toegewezen aan</label>
+    <div class="prio-row" id="eas">
+      <button class="sbtn" data-a="" style="background:${!t.assignee?'rgba(255,255,255,0.12)':'rgba(255,255,255,0.04)'};color:${!t.assignee?'#E8E4DF':'#666'}">— Geen —</button>
+      <button class="sbtn" data-a="Stijn" style="background:${t.assignee==='Stijn'?'rgba(91,123,178,0.22)':'rgba(255,255,255,0.04)'};color:${t.assignee==='Stijn'?'#8AB4F8':'#666'}">Stijn</button>
+      <button class="sbtn" data-a="Machteld" style="background:${t.assignee==='Machteld'?'rgba(197,91,122,0.22)':'rgba(255,255,255,0.04)'};color:${t.assignee==='Machteld'?'#E091AB':'#666'}">Machteld</button>
+    </div>
     <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ed" value="${t.planned||''}"></div><div><label>Tijdstip</label><input type="time" class="mi" id="etm" value="${t.planned_time||''}"></div></div>
     <label>Notities</label><textarea class="mi" id="en" rows="3">${esc(t.notes||'')}</textarea>
     <div id="ecr" style="${t.planned?'':'display:none'}">
@@ -351,9 +357,10 @@ function showEdit(id){
       <button class="bics-full" id="ecb">📥 Download .ics bestand</button>
     </div>
     <div class="brow"><button class="bsave" id="es">Opslaan</button><button class="bdel" id="edl">Verwijder</button><button class="bcan" id="ec">Annuleer</button></div>`);
-  let st=t.status,pr=t.priority;
-  bg.querySelector('#esr').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;st=b.dataset.s;bg.querySelectorAll('.sbtn').forEach(x=>{const k=x.dataset.s;x.style.background=k===st?SC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===st?SC[k]:'#666'})});
+  let st=t.status,pr=t.priority,assignee=t.assignee||'';
+  bg.querySelector('#esr').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;st=b.dataset.s;bg.querySelectorAll('#esr .sbtn').forEach(x=>{const k=x.dataset.s;x.style.background=k===st?SC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===st?SC[k]:'#666'})});
   bg.querySelector('#epr').addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(!b)return;pr=b.dataset.p;bg.querySelectorAll('.pbtn').forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})});
+  bg.querySelector('#eas').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;assignee=b.dataset.a;bg.querySelectorAll('#eas .sbtn').forEach(x=>{const a=x.dataset.a;const isAct=a===assignee;x.style.background=isAct?(a==='Stijn'?'rgba(91,123,178,0.22)':a==='Machteld'?'rgba(197,91,122,0.22)':'rgba(255,255,255,0.12)'):'rgba(255,255,255,0.04)';x.style.color=isAct?(a==='Stijn'?'#8AB4F8':a==='Machteld'?'#E091AB':'#E8E4DF'):'#666'})});
   // Update subproject dropdown when project changes
   bg.querySelector('#epj').addEventListener('change',function(){
     const pid=this.value;const wrap=bg.querySelector('#esp-wrap');const sel=bg.querySelector('#esp');
@@ -371,7 +378,7 @@ function showEdit(id){
   bg.querySelector('#es').addEventListener('click',()=>{saveTask(id,getFormData());closeM()});
   bg.querySelector('#edl').addEventListener('click',()=>{if(!confirm('Verwijderen?'))return;removeTask(id);closeM()});
   bg.querySelector('#ec').addEventListener('click',closeM);
-  function getFormData(){const pid=bg.querySelector('#epj').value||null;const spid=bg.querySelector('#esp').value||null;return{title:bg.querySelector('#et').value,priority:pr,status:st,planned:bg.querySelector('#ed').value,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value,project_id:pid,subproject_id:pid?spid:null}}
+  function getFormData(){const pid=bg.querySelector('#epj').value||null;const spid=bg.querySelector('#esp').value||null;return{title:bg.querySelector('#et').value,priority:pr,status:st,planned:bg.querySelector('#ed').value,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value,project_id:pid,subproject_id:pid?spid:null,assignee:assignee||null}}
 }
 
 function showAdd(pid,spid){
@@ -382,13 +389,20 @@ function showAdd(pid,spid){
     <label>Prioriteit</label><div class="prio-row" id="apr">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${k==='medium'?PC.medium+'22':'rgba(255,255,255,0.04)'};color:${k==='medium'?PC.medium:'#666'}">${v}</button>`).join('')}</div>
     <label>Project</label><select class="mi" id="apj"><option value="">— Geen project —</option>${projOpts}</select>
     <div id="asp-wrap" style="${sps.length?'':'display:none'}"><label>Subproject</label><select class="mi" id="asp"><option value="">— Geen subproject —</option>${sps.map(s=>`<option value="${s.id}"${spid===s.id?' selected':''}>${esc(s.title)}</option>`).join('')}</select></div>
+    <label>Toegewezen aan</label>
+    <div class="prio-row" id="aas">
+      <button class="sbtn" data-a="" style="background:rgba(255,255,255,0.12);color:#E8E4DF">— Geen —</button>
+      <button class="sbtn" data-a="Stijn" style="background:rgba(255,255,255,0.04);color:#666">Stijn</button>
+      <button class="sbtn" data-a="Machteld" style="background:rgba(255,255,255,0.04);color:#666">Machteld</button>
+    </div>
     <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ad"></div><div><label>Tijdstip</label><input type="time" class="mi" id="atm"></div></div>
     <label>Notities</label><textarea class="mi" id="an" rows="2" placeholder="Bijv. wie helpt mee..."></textarea>
     <div class="brow"><button class="bsave" id="as">Toevoegen</button><button class="bcan" id="ac">Annuleer</button></div>`);
-  let pr="medium";
+  let pr="medium",addAssignee='';
   bg.querySelector('#apr').addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(!b)return;pr=b.dataset.p;bg.querySelectorAll('.pbtn').forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})});
+  bg.querySelector('#aas').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;addAssignee=b.dataset.a;bg.querySelectorAll('#aas .sbtn').forEach(x=>{const a=x.dataset.a;const isAct=a===addAssignee;x.style.background=isAct?(a==='Stijn'?'rgba(91,123,178,0.22)':a==='Machteld'?'rgba(197,91,122,0.22)':'rgba(255,255,255,0.12)'):'rgba(255,255,255,0.04)';x.style.color=isAct?(a==='Stijn'?'#8AB4F8':a==='Machteld'?'#E091AB':'#E8E4DF'):'#666'})});
   bg.querySelector('#apj').addEventListener('change',function(){const pid=this.value;const wrap=bg.querySelector('#asp-wrap');const sel=bg.querySelector('#asp');const sps=subprojects.filter(s=>s.project_id===pid);if(sps.length){wrap.style.display='';sel.innerHTML='<option value="">— Geen subproject —</option>'+sps.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}else{wrap.style.display='none'}});
-  bg.querySelector('#as').addEventListener('click',()=>{const ti=bg.querySelector('#at').value.trim();if(!ti)return;const pjid=bg.querySelector('#apj').value||null;const spid=bg.querySelector('#asp')?.value||null;addTask({id:uid(),title:ti,status:"todo",priority:pr,planned:bg.querySelector('#ad').value,planned_time:bg.querySelector('#atm').value,notes:bg.querySelector('#an').value,task_order:tasks.length,project_id:pjid,subproject_id:pjid?spid:null});closeM()});
+  bg.querySelector('#as').addEventListener('click',()=>{const ti=bg.querySelector('#at').value.trim();if(!ti)return;const pjid=bg.querySelector('#apj').value||null;const spid=bg.querySelector('#asp')?.value||null;addTask({id:uid(),title:ti,status:"todo",priority:pr,planned:bg.querySelector('#ad').value,planned_time:bg.querySelector('#atm').value,notes:bg.querySelector('#an').value,task_order:tasks.length,project_id:pjid,subproject_id:pjid?spid:null,assignee:addAssignee||null});closeM()});
   bg.querySelector('#ac').addEventListener('click',closeM);
 }
 
@@ -464,7 +478,8 @@ function rCard(t){
     <span class="prio-tag" style="background:${PC[t.priority]}15;color:${PC[t.priority]}">${PR[t.priority]}</span>
     ${p&&!SP?`<span class="proj-tag" style="color:${p.color};border-color:${p.color}44">${esc(p.title)}</span>`:''}
     ${t.planned?`<span style="font-size:10px;color:${ov(t.planned)&&!dn?'#E85D4A':'#666'}">${fd(t.planned)}${t.planned_time?' '+t.planned_time:''}</span>`:''}
-    ${t.notes?'<span style="font-size:10px;color:#555">📝</span>':''}</div></div></div></div>`;
+    ${t.notes?'<span style="font-size:10px;color:#555">📝</span>':''}
+    ${t.assignee?`<span style="font-size:10px;padding:1px 6px;border-radius:4px;background:${t.assignee==='Stijn'?'rgba(91,123,178,0.15)':'rgba(197,91,122,0.15)'};color:${t.assignee==='Stijn'?'#8AB4F8':'#E091AB'}">${t.assignee}</span>`:''}</div></div></div></div>`;
 }
 
 function rBoard(){
