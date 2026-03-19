@@ -11,11 +11,10 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 0%,#16213e 40%,#1a1a2e 100%);color:#E8E4DF;min-height:100vh}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
-
 .header{padding:28px 32px 20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px}
 .header h1{font-family:'Playfair Display',serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#F0C27F,#D4763C);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
 .subtitle{margin-top:4px;font-size:13px;color:#8B8A8A;font-weight:300}
-.sync-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:8px;vertical-align:middle;transition:background 0.3s}
+.sync-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:8px;vertical-align:middle}
 .sync-dot.ok{background:#6BA368}.sync-dot.loading{background:#E8A94A;animation:pulse 1s infinite}.sync-dot.error{background:#E85D4A}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 .pbar{display:inline-block;margin-left:12px;width:100px;height:4px;border-radius:2px;background:rgba(255,255,255,0.08);position:relative;vertical-align:middle}
@@ -24,20 +23,17 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 
 .nav-btn{padding:7px 16px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(255,255,255,0.04);color:#8B8A8A;transition:all 0.2s}
 .nav-btn.active{background:rgba(212,118,60,0.2);color:#F0C27F}
 .nav-btn:hover,.fs-btn:hover{background:rgba(255,255,255,0.08)}
-.fs-btn{padding:7px 12px;border-radius:8px;border:none;cursor:pointer;font-size:16px;font-family:inherit;background:rgba(255,255,255,0.04);color:#8B8A8A;margin-left:4px;transition:all 0.2s}
+.fs-btn{padding:7px 12px;border-radius:8px;border:none;cursor:pointer;font-size:16px;font-family:inherit;background:rgba(255,255,255,0.04);color:#8B8A8A;margin-left:4px}
 .main{padding:24px 32px;max-width:1100px;margin:0 auto}
 .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px}
 .filter-btns{display:flex;gap:6px;flex-wrap:wrap}
 .fbtn{padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-family:inherit;background:transparent;color:#666;transition:all 0.15s}
 .fbtn.active{background:rgba(255,255,255,0.1);color:#E8E4DF}
-.fbtn.proj-filter{border:1px solid transparent}
-.fbtn.proj-filter.active{border-color:currentColor;background:transparent}
-.btn-p{padding:7px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#D4763C,#E8A94A);color:#1a1a2e;transition:transform 0.15s}
+.btn-p{padding:7px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#D4763C,#E8A94A);color:#1a1a2e}
 .btn-p:hover{transform:scale(1.02)}
-.btn-cal{padding:7px 16px;border-radius:8px;border:1px solid rgba(91,123,178,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(91,123,178,0.08);color:#7BA3D4;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s}
+.btn-cal{padding:7px 16px;border-radius:8px;border:1px solid rgba(91,123,178,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(91,123,178,0.08);color:#7BA3D4;display:inline-flex;align-items:center;gap:6px}
 .btn-cal:hover{background:rgba(91,123,178,0.15)}
-.btn-gcal{padding:7px 16px;border-radius:8px;border:1px solid rgba(66,133,244,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(66,133,244,0.08);color:#8AB4F8;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;text-decoration:none}
-.btn-gcal:hover{background:rgba(66,133,244,0.15)}
+.btn-sm{padding:5px 12px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-family:inherit;font-weight:500;transition:all 0.15s}
 .kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 @media(max-width:768px){.kanban{grid-template-columns:1fr}}
 .kcol{background:rgba(255,255,255,0.02);border-radius:14px;padding:16px;min-height:200px;border:1px solid rgba(255,255,255,0.04);transition:all 0.2s}
@@ -46,7 +42,7 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 
 .tc{padding:12px 14px;margin-bottom:8px;border-radius:10px;cursor:grab;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);transition:all 0.2s;user-select:none}
 .tc:hover{background:rgba(255,255,255,0.06)}.tc.done-card{opacity:0.5}.tc.dragging{opacity:0.4;transform:scale(0.95)}
 .tc-inner{display:flex;align-items:flex-start;gap:10px}
-.status-btn{background:none;border:none;cursor:pointer;padding:4px;font-size:16px;line-height:1;transition:transform 0.15s;border-radius:4px}
+.status-btn{background:none;border:none;cursor:pointer;padding:4px;font-size:16px;line-height:1;border-radius:4px}
 .status-btn:hover{transform:scale(1.3);background:rgba(255,255,255,0.08)}
 .tc-title{font-size:13px;font-weight:500}.tc-title.done-text{text-decoration:line-through;color:#777}
 .tc-meta{display:flex;gap:6px;margin-top:6px;align-items:center;flex-wrap:wrap}
@@ -57,15 +53,31 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 
 .pcard{background:rgba(255,255,255,0.03);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
 .pcard:hover{filter:brightness(1.1)}
 .pacc{width:4px;height:100%;position:absolute;left:0;top:0;border-radius:14px 0 0 14px}
-.addcard{background:rgba(255,255,255,0.02);border-radius:14px;padding:20px;border:1px dashed rgba(255,255,255,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#555;font-size:14px;min-height:100px;transition:all 0.2s}
+.addcard{background:rgba(255,255,255,0.02);border-radius:14px;padding:20px;border:1px dashed rgba(255,255,255,0.08);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#555;font-size:14px;min-height:100px}
 .addcard:hover{border-color:rgba(255,255,255,0.2)}
-.trow{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.04);margin-bottom:8px;transition:all 0.2s}
+/* Subproject sections */
+.sp-section{margin-bottom:20px;border:1px solid rgba(255,255,255,0.04);border-radius:14px;overflow:hidden}
+.sp-header{display:flex;align-items:center;gap:10px;padding:14px 18px;background:rgba(255,255,255,0.02);cursor:pointer;user-select:none;transition:background 0.15s}
+.sp-header:hover{background:rgba(255,255,255,0.04)}
+.sp-toggle{font-size:12px;color:#888;transition:transform 0.2s;display:inline-block}
+.sp-toggle.open{transform:rotate(90deg)}
+.sp-body{padding:0 16px 16px}
+.sp-body.collapsed{display:none}
+.sp-progress{flex:1;max-width:80px;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;margin-left:auto}
+.sp-progress-fill{height:3px;border-radius:2px;transition:width 0.3s}
+.sp-actions{display:flex;gap:6px;margin-left:8px}
+/* Unassigned section in project */
+.unassigned-section{margin-bottom:20px}
+.unassigned-header{font-size:14px;color:#888;font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+/* Timeline */
+.trow{display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.04);margin-bottom:8px}
 .trow:hover{background:rgba(255,255,255,0.04)}
-.ics-btn{background:none;border:none;cursor:pointer;padding:4px 6px;font-size:14px;opacity:0.4;transition:opacity 0.2s;border-radius:4px}
+.ics-btn{background:none;border:none;cursor:pointer;padding:4px 6px;font-size:14px;opacity:0.4;border-radius:4px}
 .ics-btn:hover{opacity:1;background:rgba(255,255,255,0.06)}
-.chip{font-size:12px;padding:5px 12px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,0.03);color:#888;border:1px solid rgba(255,255,255,0.05);transition:all 0.2s}
+.chip{font-size:12px;padding:5px 12px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,0.03);color:#888;border:1px solid rgba(255,255,255,0.05)}
 .chip:hover{background:rgba(255,255,255,0.06)}
 .tag{font-size:11px;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,0.04);color:#AAA;display:inline-block;margin:2px 4px 2px 0}
+/* Modal */
 .mbg{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
 .modal{background:#1e2340;border-radius:18px;padding:28px;width:100%;max-width:460px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.5);max-height:90vh;overflow-y:auto}
 .modal h3{margin-bottom:20px;font-size:18px;font-family:'Playfair Display',serif;color:#D4C4B0}
@@ -73,28 +85,26 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 
 .mi{width:100%;padding:10px 14px;border-radius:10px;font-size:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#E8E4DF;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:14px;color-scheme:dark;box-sizing:border-box}
 select.mi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
 textarea.mi{resize:vertical}
-.prio-row{display:flex;gap:8px;margin-bottom:14px}
-.pbtn{flex:1;padding:8px 0;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;font-weight:500;background:rgba(255,255,255,0.04);color:#666;transition:all 0.15s}
-.status-row{display:flex;gap:8px;margin-bottom:14px}
-.sbtn{flex:1;padding:8px 0;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;font-weight:500;background:rgba(255,255,255,0.04);color:#666;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.prio-row,.status-row{display:flex;gap:8px;margin-bottom:14px}
+.pbtn,.sbtn{flex:1;padding:8px 0;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;font-weight:500;background:rgba(255,255,255,0.04);color:#666;display:flex;align-items:center;justify-content:center;gap:6px}
 .dt-row{display:flex;gap:12px;margin-bottom:14px}
 .dt-row>div{flex:1}
 .colors{display:flex;gap:8px;margin-bottom:20px}
-.cdot{width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.15s}
+.cdot{width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent}
 .cdot.act{border-color:white}
 .brow{display:flex;gap:10px;margin-top:6px}
 .bsave{padding:10px 0;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#D4763C,#E8A94A);color:#1a1a2e;flex:1}
 .bdel{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-family:inherit;background:rgba(232,93,74,0.12);color:#E85D4A}
 .bcan{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-family:inherit;background:rgba(255,255,255,0.04);color:#888}
-.bcal-full{width:100%;padding:10px 0;border-radius:10px;border:1px solid rgba(66,133,244,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(66,133,244,0.08);color:#8AB4F8;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;text-decoration:none}
+.bcal-full{width:100%;padding:10px 0;border-radius:10px;border:1px solid rgba(66,133,244,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(66,133,244,0.08);color:#8AB4F8;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
 .bcal-full:hover{background:rgba(66,133,244,0.15)}
-.bics-full{width:100%;padding:10px 0;border-radius:10px;border:1px solid rgba(91,123,178,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(91,123,178,0.08);color:#7BA3D4;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s}
+.bics-full{width:100%;padding:10px 0;border-radius:10px;border:1px solid rgba(91,123,178,0.3);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;background:rgba(91,123,178,0.08);color:#7BA3D4;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
 .bics-full:hover{background:rgba(91,123,178,0.15)}
 .backbtn{background:none;border:none;color:#8B8A8A;cursor:pointer;font-size:13px;font-family:inherit;padding:0;margin-bottom:16px}
 .backbtn:hover{color:#E8E4DF}
 .reset{background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:inherit}
 .footer{text-align:center;padding:40px 0 24px}
-.proj-list-card{background:rgba(255,255,255,0.03);border-radius:14px;padding:24px;cursor:pointer;position:relative;overflow:hidden;margin-bottom:14px;transition:all 0.2s}
+.proj-list-card{background:rgba(255,255,255,0.03);border-radius:14px;padding:24px;cursor:pointer;position:relative;overflow:hidden;margin-bottom:14px}
 .btn-danger{padding:6px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;background:rgba(232,93,74,0.1);color:#E85D4A}
 .empty-state{text-align:center;padding:60px;color:#555}
 .loading-screen{display:flex;align-items:center;justify-content:center;height:100vh;font-size:15px;color:#888;gap:10px}
@@ -103,91 +113,75 @@ textarea.mi{resize:vertical}
 <body>
 <div id="app"><div class="loading-screen"><span class="sync-dot loading" style="width:10px;height:10px"></span> Laden...</div></div>
 <script>
-// ============ SUPABASE ============
 const SB_URL="https://uzokzfvtwxfmdhogapzq.supabase.co";
 const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6b2t6ZnZ0d3hmbWRob2dhcHpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MTYwMDAsImV4cCI6MjA4OTQ5MjAwMH0.qUB259Hh_j4UViq8MymS5DqgPg3TYCdxjUFxj0Jd29Y";
-const GCAL_ID="stijnenmachteld@gmail.com";
 const sb=supabase.createClient(SB_URL,SB_KEY);
-
-// ============ CONSTANTS ============
 const ST={todo:"Te doen",doing:"Bezig",done:"Klaar"},PR={high:"Hoog",medium:"Midden",low:"Laag"},PC={high:"#E85D4A",medium:"#E8A94A",low:"#6BA368"},SI={todo:"○",doing:"◑",done:"●"},SC={todo:"#8B8A8A",doing:"#E8A94A",done:"#6BA368"},STATUSES=["todo","doing","done"];
 
-const DD_TASKS=[
-{id:"t1",title:"Plaatsen garderobekast",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:0,project_id:null},
-{id:"t2",title:"Openslaande taatsdeuren entree-woonkamer",status:"todo",priority:"high",planned:"",planned_time:"",notes:"",task_order:1,project_id:null},
-{id:"t3",title:"Glazen deur tweede slaapkamer",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:2,project_id:null},
-{id:"t4",title:"Ophangen gordijnen en plissé gordijnen",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:3,project_id:null},
-{id:"t5",title:"LED-strips plaatsen met Sebas",status:"todo",priority:"low",planned:"",planned_time:"",notes:"Samen met Sebas",task_order:4,project_id:null},
-{id:"t6",title:"Klapperende leiding laten oplossen door Tony",status:"todo",priority:"high",planned:"",planned_time:"",notes:"Tony inschakelen",task_order:5,project_id:null},
-{id:"t7",title:"Meubel voor draaitafels incl. boekenkast",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:6,project_id:null},
-{id:"t8",title:"Plafondlamp slaapkamer",status:"todo",priority:"low",planned:"",planned_time:"",notes:"",task_order:7,project_id:null},
-{id:"t9",title:"Plafondlamp tweede slaapkamer",status:"todo",priority:"low",planned:"",planned_time:"",notes:"",task_order:8,project_id:null}];
-const DD_PTASKS=[
-{id:"pt1",title:"Slot vervangen met Daan",status:"todo",priority:"high",planned:"",planned_time:"",notes:"Samen met Daan",task_order:0,project_id:"p1"},
-{id:"pt2",title:"Nieuwe deurbel",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:1,project_id:"p1"},
-{id:"pt3",title:"Brievenbus",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:2,project_id:"p1"},
-{id:"pt4",title:"Opnieuw schuren en beitsen",status:"todo",priority:"high",planned:"",planned_time:"",notes:"",task_order:3,project_id:"p1"},
-{id:"pt5",title:"Tochtstrips",status:"todo",priority:"low",planned:"",planned_time:"",notes:"",task_order:4,project_id:"p1"}];
-const DD_PROJECTS=[
-{id:"p1",title:"Voordeur",description:"Complete renovatie van de voordeur",color:"#D4763C"},
-{id:"p2",title:"Tuin",description:"Groot tuinproject — voorbereiding en uitvoering",color:"#4A7C59"}];
-
-// ============ STATE ============
-let tasks=[],projects=[],V="board",SP=null,F="all",PF=null,syncState="loading",idC=100;
-let dragTaskId=null;
+let tasks=[],projects=[],subprojects=[],V="board",SP=null,F="all",PF=null,syncState="loading",idC=100,dragTaskId=null;
+let collapsed={};// track collapsed subprojects
 
 function uid(){idC++;return"id_"+Date.now()+"_"+idC}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
 function fd(d){if(!d)return"";return new Date(d+"T00:00:00").toLocaleDateString("nl-NL",{day:"numeric",month:"short",year:"numeric"})}
 function ov(d){return d?new Date(d+"T00:00:00")<new Date(new Date().toDateString()):false}
 function findTask(id){return tasks.find(t=>t.id===id)}
-function looseTasks(){return tasks.filter(t=>!t.project_id)}
 function projTasks(pid){return tasks.filter(t=>t.project_id===pid)}
-function allFlat(){return tasks.map(t=>{const p=t.project_id?projects.find(x=>x.id===t.project_id):null;return{...t,pT:p?.title||null,pC:p?.color||null}})}
+function spTasks(spid){return tasks.filter(t=>t.subproject_id===spid)}
+function projSubprojects(pid){return subprojects.filter(s=>s.project_id===pid).sort((a,b)=>(a.task_order||0)-(b.task_order||0))}
+function allFlat(){return tasks.map(t=>{const p=t.project_id?projects.find(x=>x.id===t.project_id):null;const s=t.subproject_id?subprojects.find(x=>x.id===t.subproject_id):null;return{...t,pT:p?.title||null,pC:p?.color||null,spT:s?.title||null}})}
 
-// ============ GOOGLE CALENDAR URL BUILDER ============
 function gcalUrl(t){
   const base="https://calendar.google.com/calendar/render?action=TEMPLATE";
-  let url=base+"&text="+encodeURIComponent("🔨 "+t.title);
-  if(t.planned){
-    const d=t.planned.replace(/-/g,'');
-    if(t.planned_time){
-      const tm=t.planned_time.replace(':','')+'00';
-      const [h,m]=t.planned_time.split(':').map(Number);
-      const eh=String(h+1).padStart(2,'0')+String(m).padStart(2,'0')+'00';
-      url+="&dates="+d+"T"+tm+"/"+d+"T"+eh;
-    }else{
-      const nd=new Date(t.planned+"T00:00:00");nd.setDate(nd.getDate()+1);
-      const p2=n=>String(n).padStart(2,'0');
-      const ed=nd.getFullYear()+p2(nd.getMonth()+1)+p2(nd.getDate());
-      url+="&dates="+d+"/"+ed;
-    }
-  }
-  if(t.notes)url+="&details="+encodeURIComponent(t.notes);
-  url+="&ctz=Europe/Amsterdam";
-  return url;
+  let u=base+"&text="+encodeURIComponent("🔨 "+t.title);
+  if(t.planned){const d=t.planned.replace(/-/g,'');if(t.planned_time){const tm=t.planned_time.replace(':','')+'00';const[h,m]=t.planned_time.split(':').map(Number);const eh=String(h+1).padStart(2,'0')+String(m).padStart(2,'0')+'00';u+="&dates="+d+"T"+tm+"/"+d+"T"+eh}else{const nd=new Date(t.planned+"T00:00:00");nd.setDate(nd.getDate()+1);const p2=n=>String(n).padStart(2,'0');u+="&dates="+d+"/"+nd.getFullYear()+p2(nd.getMonth()+1)+p2(nd.getDate())}}
+  if(t.notes)u+="&details="+encodeURIComponent(t.notes);
+  return u+"&ctz=Europe/Amsterdam";
 }
 
-// ============ SUPABASE OPS ============
+// ============ SUPABASE ============
 async function dbLoad(){
   syncState="loading";updateDot();
   try{
-    const[tR,pR]=await Promise.all([sb.from('tasks').select('*').order('task_order'),sb.from('projects').select('*')]);
-    if(tR.error)throw tR.error;if(pR.error)throw pR.error;
-    tasks=tR.data||[];projects=pR.data||[];
+    const[tR,pR,sR]=await Promise.all([sb.from('tasks').select('*').order('task_order'),sb.from('projects').select('*'),sb.from('subprojects').select('*').order('task_order')]);
+    if(tR.error)throw tR.error;if(pR.error)throw pR.error;if(sR.error)throw sR.error;
+    tasks=tR.data||[];projects=pR.data||[];subprojects=sR.data||[];
     if(!projects.length&&!tasks.length)await seed();
     syncState="ok";
   }catch(e){console.error(e);syncState="error"}
   render();
 }
 async function seed(){
-  try{await sb.from('projects').upsert(DD_PROJECTS);await sb.from('tasks').upsert([...DD_TASKS,...DD_PTASKS]);tasks=[...DD_TASKS,...DD_PTASKS];projects=[...DD_PROJECTS]}catch(e){console.error(e)}
+  const defP=[{id:"p1",title:"Voordeur",description:"Complete renovatie van de voordeur",color:"#D4763C"},{id:"p2",title:"Tuin",description:"Groot tuinproject — voorbereiding en uitvoering",color:"#4A7C59"}];
+  const defT=[
+    {id:"t1",title:"Plaatsen garderobekast",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:0,project_id:null,subproject_id:null},
+    {id:"t2",title:"Openslaande taatsdeuren entree-woonkamer",status:"todo",priority:"high",planned:"",planned_time:"",notes:"",task_order:1,project_id:null,subproject_id:null},
+    {id:"t3",title:"Glazen deur tweede slaapkamer",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:2,project_id:null,subproject_id:null},
+    {id:"t4",title:"Ophangen gordijnen en plissé gordijnen",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:3,project_id:null,subproject_id:null},
+    {id:"t5",title:"LED-strips plaatsen met Sebas",status:"todo",priority:"low",planned:"",planned_time:"",notes:"Samen met Sebas",task_order:4,project_id:null,subproject_id:null},
+    {id:"t6",title:"Klapperende leiding laten oplossen door Tony",status:"todo",priority:"high",planned:"",planned_time:"",notes:"Tony inschakelen",task_order:5,project_id:null,subproject_id:null},
+    {id:"t7",title:"Meubel voor draaitafels incl. boekenkast",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:6,project_id:null,subproject_id:null},
+    {id:"t8",title:"Plafondlamp slaapkamer",status:"todo",priority:"low",planned:"",planned_time:"",notes:"",task_order:7,project_id:null,subproject_id:null},
+    {id:"t9",title:"Plafondlamp tweede slaapkamer",status:"todo",priority:"low",planned:"",planned_time:"",notes:"",task_order:8,project_id:null,subproject_id:null},
+    {id:"pt1",title:"Slot vervangen met Daan",status:"todo",priority:"high",planned:"",planned_time:"",notes:"Samen met Daan",task_order:0,project_id:"p1",subproject_id:null},
+    {id:"pt2",title:"Nieuwe deurbel",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:1,project_id:"p1",subproject_id:null},
+    {id:"pt3",title:"Brievenbus",status:"todo",priority:"medium",planned:"",planned_time:"",notes:"",task_order:2,project_id:"p1",subproject_id:null},
+    {id:"pt4",title:"Opnieuw schuren en beitsen",status:"todo",priority:"high",planned:"",planned_time:"",notes:"",task_order:3,project_id:"p1",subproject_id:null},
+    {id:"pt5",title:"Tochtstrips",status:"todo",priority:"low",planned:"",planned_time:"",notes:"",task_order:4,project_id:"p1",subproject_id:null}
+  ];
+  try{await sb.from('projects').upsert(defP);await sb.from('tasks').upsert(defT);tasks=defT;projects=defP;subprojects=[]}catch(e){console.error(e)}
 }
+function updateDot(){const d=document.querySelector('.sync-dot');if(d)d.className='sync-dot '+syncState}
 async function dbSave(t){syncState="loading";updateDot();try{await sb.from('tasks').upsert(t);syncState="ok"}catch(e){console.error(e);syncState="error"}updateDot()}
 async function dbDel(id){syncState="loading";updateDot();try{await sb.from('tasks').delete().eq('id',id);syncState="ok"}catch(e){console.error(e);syncState="error"}updateDot()}
 async function dbSaveP(p){syncState="loading";updateDot();try{await sb.from('projects').upsert(p);syncState="ok"}catch(e){console.error(e);syncState="error"}updateDot()}
-async function dbDelP(id){syncState="loading";updateDot();try{await sb.from('tasks').delete().eq('project_id',id);await sb.from('projects').delete().eq('id',id);syncState="ok"}catch(e){console.error(e);syncState="error"}updateDot()}
-function updateDot(){const d=document.querySelector('.sync-dot');if(d)d.className='sync-dot '+syncState}
+async function dbDelP(id){syncState="loading";updateDot();try{await sb.from('subprojects').delete().eq('project_id',id);await sb.from('tasks').delete().eq('project_id',id);await sb.from('projects').delete().eq('id',id);syncState="ok"}catch(e){console.error(e);syncState="error"}updateDot()}
+async function dbSaveSP(s){syncState="loading";updateDot();try{await sb.from('subprojects').upsert(s);syncState="ok"}catch(e){console.error(e);syncState="error"}updateDot()}
+async function dbDelSP(id){syncState="loading";updateDot();try{
+  // Move tasks from deleted subproject back to unassigned in same project
+  const sp=subprojects.find(s=>s.id===id);
+  if(sp){const tsk=tasks.filter(t=>t.subproject_id===id);for(const t of tsk){t.subproject_id=null;await sb.from('tasks').update({subproject_id:null}).eq('id',t.id)}}
+  await sb.from('subprojects').delete().eq('id',id);syncState="ok"}catch(e){console.error(e);syncState="error"}updateDot()}
 
 // ============ ACTIONS ============
 async function cycleStatus(id){const t=findTask(id);if(!t)return;t.status=STATUSES[(STATUSES.indexOf(t.status)+1)%3];render();await dbSave(t)}
@@ -196,12 +190,14 @@ async function saveTask(id,u){const t=findTask(id);if(!t)return;Object.assign(t,
 async function addTask(d){tasks.push(d);render();await dbSave(d)}
 async function removeTask(id){tasks=tasks.filter(t=>t.id!==id);render();await dbDel(id)}
 async function addProject(d){projects.push(d);render();await dbSaveP(d)}
-async function removeProject(id){tasks=tasks.filter(t=>t.project_id!==id);projects=projects.filter(p=>p.id!==id);SP=null;render();await dbDelP(id)}
-async function resetAll(){if(!confirm('Alles resetten?'))return;syncState="loading";render();try{await sb.from('tasks').delete().neq('id','__');await sb.from('projects').delete().neq('id','__');await seed();V="board";SP=null;F="all";PF=null;syncState="ok"}catch(e){syncState="error";console.error(e)}render()}
+async function removeProject(id){tasks=tasks.filter(t=>t.project_id!==id);subprojects=subprojects.filter(s=>s.project_id!==id);projects=projects.filter(p=>p.id!==id);SP=null;render();await dbDelP(id)}
+async function addSubproject(d){subprojects.push(d);render();await dbSaveSP(d)}
+async function removeSubproject(id){const sp=subprojects.find(s=>s.id===id);tasks.filter(t=>t.subproject_id===id).forEach(t=>t.subproject_id=null);subprojects=subprojects.filter(s=>s.id!==id);render();await dbDelSP(id)}
+async function resetAll(){if(!confirm('Alles resetten?'))return;syncState="loading";render();try{await sb.from('tasks').delete().neq('id','__');await sb.from('subprojects').delete().neq('id','__');await sb.from('projects').delete().neq('id','__');await seed();V="board";SP=null;F="all";PF=null;collapsed={};syncState="ok"}catch(e){syncState="error"}render()}
 
 // ============ DRAG & DROP ============
 function onDS(e){const c=e.target.closest('.tc');if(!c)return;dragTaskId=c.dataset.id;c.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',dragTaskId)}
-function onDE(e){const c=e.target.closest('.tc');if(c)c.classList.remove('dragging');document.querySelectorAll('.kcol').forEach(c=>c.classList.remove('drag-over'));dragTaskId=null}
+function onDE(e){document.querySelectorAll('.tc.dragging').forEach(c=>c.classList.remove('dragging'));document.querySelectorAll('.kcol').forEach(c=>c.classList.remove('drag-over'));dragTaskId=null}
 function onDO(e){e.preventDefault();e.dataTransfer.dropEffect='move';const c=e.target.closest('.kcol');if(c)c.classList.add('drag-over')}
 function onDL(e){const c=e.target.closest('.kcol');if(c&&!c.contains(e.relatedTarget))c.classList.remove('drag-over')}
 function onDR(e){e.preventDefault();const c=e.target.closest('.kcol');if(!c||!dragTaskId)return;c.classList.remove('drag-over');moveTask(dragTaskId,c.dataset.status)}
@@ -219,158 +215,197 @@ function closeM(){document.querySelector(".mbg")?.remove()}
 function showEdit(id){
   const t=findTask(id);if(!t)return;
   const projOpts=projects.map(p=>`<option value="${p.id}"${t.project_id===p.id?' selected':''}>${esc(p.title)}</option>`).join('');
+  // Build subproject options based on current project
+  function spOpts(pid){
+    const sps=subprojects.filter(s=>s.project_id===pid);
+    if(!sps.length)return'';
+    return sps.map(s=>`<option value="${s.id}"${t.subproject_id===s.id?' selected':''}>${esc(s.title)}</option>`).join('');
+  }
+  const hasSps=t.project_id&&subprojects.some(s=>s.project_id===t.project_id);
   const bg=showM(`<h3>Klus bewerken</h3>
     <label>Status</label>
     <div class="status-row" id="esr">${Object.entries(ST).map(([k,v])=>`<button class="sbtn" data-s="${k}" style="background:${t.status===k?SC[k]+'22':'rgba(255,255,255,0.04)'};color:${t.status===k?SC[k]:'#666'}">${SI[k]} ${v}</button>`).join('')}</div>
     <label>Titel</label><input class="mi" id="et" value="${esc(t.title)}">
     <label>Prioriteit</label>
     <div class="prio-row" id="epr">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${t.priority===k?PC[k]+'22':'rgba(255,255,255,0.04)'};color:${t.priority===k?PC[k]:'#666'}">${v}</button>`).join('')}</div>
-    <label>Project (optioneel)</label>
+    <label>Project</label>
     <select class="mi" id="epj"><option value="">— Geen project —</option>${projOpts}</select>
-    <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ed" value="${t.planned||''}"></div>
-    <div><label>Tijdstip</label><input type="time" class="mi" id="etm" value="${t.planned_time||''}"></div></div>
+    <div id="esp-wrap" style="${hasSps?'':'display:none'}"><label>Subproject</label><select class="mi" id="esp"><option value="">— Geen subproject —</option>${spOpts(t.project_id)}</select></div>
+    <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ed" value="${t.planned||''}"></div><div><label>Tijdstip</label><input type="time" class="mi" id="etm" value="${t.planned_time||''}"></div></div>
     <label>Notities</label><textarea class="mi" id="en" rows="3">${esc(t.notes||'')}</textarea>
-    <div id="ecr" style="${t.planned?'':'display:none'}">
-      <a class="bcal-full" id="gcl" href="${gcalUrl(t)}" target="_blank" rel="noopener">📅 Toevoegen aan Google Agenda</a>
-      <button class="bics-full" id="ecb">📥 Download .ics bestand</button>
-    </div>
+    <div id="ecr" style="${t.planned?'':'display:none'}"><a class="bcal-full" id="gcl" href="${gcalUrl(t)}" target="_blank">📅 Toevoegen aan Google Agenda</a><button class="bics-full" id="ecb">📥 Download .ics</button></div>
     <div class="brow"><button class="bsave" id="es">Opslaan</button><button class="bdel" id="edl">Verwijder</button><button class="bcan" id="ec">Annuleer</button></div>`);
-
-  let st=t.status, pr=t.priority;
+  let st=t.status,pr=t.priority;
   bg.querySelector('#esr').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;st=b.dataset.s;bg.querySelectorAll('.sbtn').forEach(x=>{const k=x.dataset.s;x.style.background=k===st?SC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===st?SC[k]:'#666'})});
   bg.querySelector('#epr').addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(!b)return;pr=b.dataset.p;bg.querySelectorAll('.pbtn').forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})});
-  function updCal(){
-    const d=bg.querySelector('#ed').value;bg.querySelector('#ecr').style.display=d?'':'none';
-    const tmp={title:bg.querySelector('#et').value,planned:d,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value};
-    bg.querySelector('#gcl').href=gcalUrl(tmp);
-  }
+  // Update subproject dropdown when project changes
+  bg.querySelector('#epj').addEventListener('change',function(){
+    const pid=this.value;const wrap=bg.querySelector('#esp-wrap');const sel=bg.querySelector('#esp');
+    const sps=subprojects.filter(s=>s.project_id===pid);
+    if(sps.length){wrap.style.display='';sel.innerHTML='<option value="">— Geen subproject —</option>'+sps.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}else{wrap.style.display='none';sel.innerHTML='<option value="">— Geen subproject —</option>'}
+  });
+  function updCal(){const d=bg.querySelector('#ed').value;bg.querySelector('#ecr').style.display=d?'':'none';bg.querySelector('#gcl').href=gcalUrl({title:bg.querySelector('#et').value,planned:d,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value})}
   bg.querySelector('#ed').addEventListener('change',updCal);bg.querySelector('#etm').addEventListener('change',updCal);bg.querySelector('#et').addEventListener('input',updCal);
-  bg.querySelector('#ecb').addEventListener('click',()=>{const u={title:bg.querySelector('#et').value,priority:pr,status:st,planned:bg.querySelector('#ed').value,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value,project_id:bg.querySelector('#epj').value||null};saveTask(id,u);dlOne(id)});
-  bg.querySelector('#es').addEventListener('click',()=>{saveTask(id,{title:bg.querySelector('#et').value,priority:pr,status:st,planned:bg.querySelector('#ed').value,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value,project_id:bg.querySelector('#epj').value||null});closeM()});
+  bg.querySelector('#ecb').addEventListener('click',()=>{const u=getFormData();saveTask(id,u);dlOne(id)});
+  bg.querySelector('#es').addEventListener('click',()=>{saveTask(id,getFormData());closeM()});
   bg.querySelector('#edl').addEventListener('click',()=>{if(!confirm('Verwijderen?'))return;removeTask(id);closeM()});
   bg.querySelector('#ec').addEventListener('click',closeM);
+  function getFormData(){const pid=bg.querySelector('#epj').value||null;const spid=bg.querySelector('#esp').value||null;return{title:bg.querySelector('#et').value,priority:pr,status:st,planned:bg.querySelector('#ed').value,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value,project_id:pid,subproject_id:pid?spid:null}}
 }
 
-function showAdd(pid){
+function showAdd(pid,spid){
   const projOpts=projects.map(p=>`<option value="${p.id}"${pid===p.id?' selected':''}>${esc(p.title)}</option>`).join('');
-  const bg=showM(`<h3>${pid?'Projecttaak toevoegen':'Nieuwe klus'}</h3>
+  const sps=pid?subprojects.filter(s=>s.project_id===pid):[];
+  const bg=showM(`<h3>Nieuwe klus</h3>
     <label>Titel</label><input class="mi" id="at" placeholder="Wat moet er gebeuren?">
     <label>Prioriteit</label><div class="prio-row" id="apr">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${k==='medium'?PC.medium+'22':'rgba(255,255,255,0.04)'};color:${k==='medium'?PC.medium:'#666'}">${v}</button>`).join('')}</div>
-    <label>Project (optioneel)</label><select class="mi" id="apj"><option value="">— Geen project —</option>${projOpts}</select>
+    <label>Project</label><select class="mi" id="apj"><option value="">— Geen project —</option>${projOpts}</select>
+    <div id="asp-wrap" style="${sps.length?'':'display:none'}"><label>Subproject</label><select class="mi" id="asp"><option value="">— Geen subproject —</option>${sps.map(s=>`<option value="${s.id}"${spid===s.id?' selected':''}>${esc(s.title)}</option>`).join('')}</select></div>
     <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ad"></div><div><label>Tijdstip</label><input type="time" class="mi" id="atm"></div></div>
     <label>Notities</label><textarea class="mi" id="an" rows="2" placeholder="Bijv. wie helpt mee..."></textarea>
     <div class="brow"><button class="bsave" id="as">Toevoegen</button><button class="bcan" id="ac">Annuleer</button></div>`);
   let pr="medium";
   bg.querySelector('#apr').addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(!b)return;pr=b.dataset.p;bg.querySelectorAll('.pbtn').forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})});
-  bg.querySelector('#as').addEventListener('click',()=>{const ti=bg.querySelector('#at').value.trim();if(!ti)return;addTask({id:uid(),title:ti,status:"todo",priority:pr,planned:bg.querySelector('#ad').value,planned_time:bg.querySelector('#atm').value,notes:bg.querySelector('#an').value,task_order:tasks.length,project_id:bg.querySelector('#apj').value||null});closeM()});
+  bg.querySelector('#apj').addEventListener('change',function(){const pid=this.value;const wrap=bg.querySelector('#asp-wrap');const sel=bg.querySelector('#asp');const sps=subprojects.filter(s=>s.project_id===pid);if(sps.length){wrap.style.display='';sel.innerHTML='<option value="">— Geen subproject —</option>'+sps.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}else{wrap.style.display='none'}});
+  bg.querySelector('#as').addEventListener('click',()=>{const ti=bg.querySelector('#at').value.trim();if(!ti)return;const pjid=bg.querySelector('#apj').value||null;const spid=bg.querySelector('#asp')?.value||null;addTask({id:uid(),title:ti,status:"todo",priority:pr,planned:bg.querySelector('#ad').value,planned_time:bg.querySelector('#atm').value,notes:bg.querySelector('#an').value,task_order:tasks.length,project_id:pjid,subproject_id:pjid?spid:null});closeM()});
   bg.querySelector('#ac').addEventListener('click',closeM);
 }
 
 function showAddProj(){
   const cl=["#D4763C","#4A7C59","#5B7BB2","#9B5BA5","#C75B7A","#7BA3A3","#B8860B"];
-  const bg=showM(`<h3>Nieuw project</h3><label>Naam</label><input class="mi" id="pt" placeholder="Bijv. Tuin, Badkamer...">
-    <label>Beschrijving</label><textarea class="mi" id="pd" rows="2" placeholder="Kort overzicht"></textarea>
-    <label>Kleur</label><div class="colors" id="pcl">${cl.map((c,i)=>`<div class="cdot${i===2?' act':''}" data-c="${c}" style="background:${c}"></div>`).join('')}</div>
-    <div class="brow"><button class="bsave" id="ps">Aanmaken</button><button class="bcan" id="pc">Annuleer</button></div>`);
+  const bg=showM(`<h3>Nieuw project</h3><label>Naam</label><input class="mi" id="pt"><label>Beschrijving</label><textarea class="mi" id="pd" rows="2"></textarea><label>Kleur</label><div class="colors" id="pcl">${cl.map((c,i)=>`<div class="cdot${i===2?' act':''}" data-c="${c}" style="background:${c}"></div>`).join('')}</div><div class="brow"><button class="bsave" id="ps">Aanmaken</button><button class="bcan" id="pc">Annuleer</button></div>`);
   let co=cl[2];
   bg.querySelector('#pcl').addEventListener('click',e=>{const d=e.target.closest('.cdot');if(!d)return;co=d.dataset.c;bg.querySelectorAll('.cdot').forEach(x=>x.classList.toggle('act',x.dataset.c===co))});
   bg.querySelector('#ps').addEventListener('click',()=>{const ti=bg.querySelector('#pt').value.trim();if(!ti)return;addProject({id:uid(),title:ti,description:bg.querySelector('#pd').value,color:co});closeM()});
   bg.querySelector('#pc').addEventListener('click',closeM);
 }
 
+function showAddSP(pid){
+  const p=projects.find(x=>x.id===pid);
+  const bg=showM(`<h3>Nieuw subproject</h3><p style="font-size:12px;color:#888;margin-bottom:14px">Onder: ${esc(p?.title)}</p><label>Naam</label><input class="mi" id="spt" placeholder="Bijv. Voorbereiding, Fase 1..."><div class="brow"><button class="bsave" id="sps">Aanmaken</button><button class="bcan" id="spc">Annuleer</button></div>`);
+  bg.querySelector('#sps').addEventListener('click',()=>{const ti=bg.querySelector('#spt').value.trim();if(!ti)return;addSubproject({id:uid(),title:ti,project_id:pid,color:'',task_order:subprojects.filter(s=>s.project_id===pid).length});closeM()});
+  bg.querySelector('#spc').addEventListener('click',closeM);
+}
+
 // ============ RENDER ============
 function render(){
   const all=allFlat(),dc=all.filter(t=>t.status==="done").length,pct=all.length?(dc/all.length)*100:0;
-  let h=`<div class="header"><div><h1>Klusplanner</h1>
-    <p class="subtitle">${dc} / ${all.length} klaar <span class="pbar"><span class="pfill" style="width:${pct}%"></span></span>
-    <span class="sync-dot ${syncState}"></span></p></div>
-    <div class="nav-btns">
-      <button class="nav-btn ${V==='board'?'active':''}" data-view="board">Overzicht</button>
-      <button class="nav-btn ${V==='projects'?'active':''}" data-view="projects">Projecten</button>
-      <button class="nav-btn ${V==='timeline'?'active':''}" data-view="timeline">Planning</button>
-      <button class="fs-btn" id="fsbtn">⛶</button>
-    </div></div><div class="main">`;
+  let h=`<div class="header"><div><h1>Klusplanner</h1><p class="subtitle">${dc} / ${all.length} klaar <span class="pbar"><span class="pfill" style="width:${pct}%"></span></span><span class="sync-dot ${syncState}"></span></p></div><div class="nav-btns">
+    <button class="nav-btn ${V==='board'?'active':''}" data-view="board">Overzicht</button>
+    <button class="nav-btn ${V==='projects'?'active':''}" data-view="projects">Projecten</button>
+    <button class="nav-btn ${V==='timeline'?'active':''}" data-view="timeline">Planning</button>
+    <button class="fs-btn" id="fsbtn">⛶</button></div></div><div class="main">`;
   if(V==="board"&&!SP)h+=rBoard()+rProjCards();
   else if(V==="projects"&&SP)h+=rProjDet();
   else if(V==="projects"&&!SP)h+=rProjList();
   else if(V==="timeline")h+=rTimeline();
-  h+=`</div><div class="footer"><button class="reset" id="resetbtn">Reset naar beginstand</button></div>`;
-  document.getElementById("app").innerHTML=h;
-  bind();
+  h+=`</div><div class="footer"><button class="reset" id="resetbtn">Reset</button></div>`;
+  document.getElementById("app").innerHTML=h;bind();
 }
 
 function rCard(t){
-  const dn=t.status==="done";const p=t.project_id?projects.find(x=>x.id===t.project_id):null;
+  const dn=t.status==="done",p=t.project_id?projects.find(x=>x.id===t.project_id):null;
   return`<div class="tc${dn?' done-card':''}" draggable="true" data-id="${t.id}"><div class="tc-inner">
     <button class="status-btn" data-action="cycle" data-id="${t.id}" style="color:${SC[t.status]}">${SI[t.status]}</button>
-    <div style="flex:1"><span class="tc-title${dn?' done-text':''}">${esc(t.title)}</span>
-    <div class="tc-meta">
-      <span class="prio-tag" style="background:${PC[t.priority]}15;color:${PC[t.priority]}">${PR[t.priority]}</span>
-      ${p&&!SP?`<span class="proj-tag" style="color:${p.color};border-color:${p.color}44">${esc(p.title)}</span>`:''}
-      ${t.planned?`<span class="date-tag${ov(t.planned)&&!dn?' overdue':''}" style="font-size:10px;color:${ov(t.planned)&&!dn?'#E85D4A':'#666'}">${fd(t.planned)}${t.planned_time?' '+t.planned_time:''}</span>`:''}
-      ${t.notes?'<span style="font-size:10px;color:#555">📝</span>':''}
-    </div></div></div></div>`;
+    <div style="flex:1"><span class="tc-title${dn?' done-text':''}">${esc(t.title)}</span><div class="tc-meta">
+    <span class="prio-tag" style="background:${PC[t.priority]}15;color:${PC[t.priority]}">${PR[t.priority]}</span>
+    ${p&&!SP?`<span class="proj-tag" style="color:${p.color};border-color:${p.color}44">${esc(p.title)}</span>`:''}
+    ${t.planned?`<span style="font-size:10px;color:${ov(t.planned)&&!dn?'#E85D4A':'#666'}">${fd(t.planned)}${t.planned_time?' '+t.planned_time:''}</span>`:''}
+    ${t.notes?'<span style="font-size:10px;color:#555">📝</span>':''}</div></div></div></div>`;
 }
 
 function rBoard(){
-  // Apply both priority and project filters
-  let ts=tasks;
-  if(F!=="all")ts=ts.filter(t=>t.priority===F);
-  if(PF)ts=ts.filter(t=>t.project_id===PF);
-  else if(PF===null&&V==="board")ts=ts; // show all including project tasks in board
-
+  let ts=tasks;if(F!=="all")ts=ts.filter(t=>t.priority===F);if(PF==='')ts=ts.filter(t=>!t.project_id);else if(PF)ts=ts.filter(t=>t.project_id===PF);
   let h=`<div class="toolbar"><div class="filter-btns">
     ${["all","high","medium","low"].map(f=>`<button class="fbtn${F===f?' active':''}" data-filter="${f}" ${F===f&&f!=="all"?`style="background:${PC[f]}22;color:${PC[f]}"`:``}>${f==="all"?"Alle":PR[f]}</button>`).join('')}
     <span style="width:1px;height:20px;background:rgba(255,255,255,0.1);margin:0 4px"></span>
-    <button class="fbtn proj-filter${PF===null?' active':''}" data-pfilter="all">Alle</button>
-    <button class="fbtn proj-filter${PF===''?' active':''}" data-pfilter="none" style="${PF===''?'color:#E8E4DF':''}">Geen project</button>
-    ${projects.map(p=>`<button class="fbtn proj-filter${PF===p.id?' active':''}" data-pfilter="${p.id}" style="color:${PF===p.id?p.color:'#666'};${PF===p.id?'border-color:'+p.color+';background:'+p.color+'11':''}">${esc(p.title)}</button>`).join('')}
+    <button class="fbtn${PF===null?' active':''}" data-pfilter="all">Alle</button>
+    <button class="fbtn${PF===''?' active':''}" data-pfilter="none">Zonder project</button>
+    ${projects.map(p=>`<button class="fbtn${PF===p.id?' active':''}" data-pfilter="${p.id}" style="${PF===p.id?'color:'+p.color+';background:'+p.color+'11':''}">${esc(p.title)}</button>`).join('')}
   </div><button class="btn-p" data-action="add-task">+ Nieuwe klus</button></div><div class="kanban">`;
-  for(const[k,l]of Object.entries(ST)){
-    const c=ts.filter(t=>t.status===k).sort((a,b)=>(a.task_order||0)-(b.task_order||0));
-    h+=`<div class="kcol" data-status="${k}"><div class="ch"><span style="font-size:16px;color:${SC[k]}">${SI[k]}</span><span style="font-size:13px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:0.5px">${l}</span><span style="font-size:11px;color:#555;margin-left:auto">${c.length}</span></div>${c.map(t=>rCard(t)).join('')}</div>`;
-  }
+  for(const[k,l]of Object.entries(ST)){const c=ts.filter(t=>t.status===k).sort((a,b)=>(a.task_order||0)-(b.task_order||0));
+    h+=`<div class="kcol" data-status="${k}"><div class="ch"><span style="font-size:16px;color:${SC[k]}">${SI[k]}</span><span style="font-size:13px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:0.5px">${l}</span><span style="font-size:11px;color:#555;margin-left:auto">${c.length}</span></div>${c.map(t=>rCard(t)).join('')}</div>`}
   return h+'</div>';
 }
 
 function rProjCards(){
   let h=`<h2 class="stitle" style="font-size:20px;margin-top:36px;margin-bottom:14px">Projecten</h2><div class="pgrid">`;
-  projects.forEach(p=>{const pt=projTasks(p.id),d=pt.filter(t=>t.status==="done").length,tt=pt.length,pc=tt?(d/tt)*100:0;
-    h+=`<div class="pcard" style="border:1px solid ${p.color}33" data-action="open-project" data-id="${p.id}"><div class="pacc" style="background:${p.color}"></div><h3 style="margin:0;font-size:16px;font-weight:600;color:${p.color}">${esc(p.title)}</h3><p style="margin:6px 0 0;font-size:12px;color:#777">${esc(p.description)}</p><div style="margin-top:12px;display:flex;align-items:center;gap:8px"><div style="flex:1;height:3px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="height:3px;border-radius:2px;background:${p.color};width:${pc}%"></div></div><span style="font-size:11px;color:#666">${d}/${tt}</span></div></div>`});
+  projects.forEach(p=>{const pt=projTasks(p.id),d=pt.filter(t=>t.status==="done").length,tt=pt.length,pc=tt?(d/tt)*100:0;const spc=projSubprojects(p.id).length;
+    h+=`<div class="pcard" style="border:1px solid ${p.color}33" data-action="open-project" data-id="${p.id}"><div class="pacc" style="background:${p.color}"></div><h3 style="margin:0;font-size:16px;font-weight:600;color:${p.color}">${esc(p.title)}</h3><p style="margin:6px 0 0;font-size:12px;color:#777">${esc(p.description)}${spc?` · ${spc} subproject${spc>1?'en':''}`:''}</p><div style="margin-top:12px;display:flex;align-items:center;gap:8px"><div style="flex:1;height:3px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="height:3px;border-radius:2px;background:${p.color};width:${pc}%"></div></div><span style="font-size:11px;color:#666">${d}/${tt}</span></div></div>`});
   return h+`<div class="addcard" data-action="add-project">+ Nieuw project</div></div>`;
 }
 
 function rProjDet(){
-  const p=projects.find(x=>x.id===SP);if(!p)return"";const pt=projTasks(p.id);
-  let h=`<button class="backbtn" data-action="back">← Terug</button><div style="display:flex;align-items:center;gap:16px;margin-bottom:24px"><div style="width:6px;height:40px;border-radius:3px;background:${p.color}"></div><div><h2 class="stitle" style="font-size:24px;color:${p.color}">${esc(p.title)}</h2><p style="margin:4px 0 0;font-size:13px;color:#777">${esc(p.description)}</p></div><button class="btn-danger" style="margin-left:auto" data-action="delete-project" data-id="${p.id}">Verwijder</button></div><div class="kanban">`;
-  for(const[k,l]of Object.entries(ST)){const c=pt.filter(t=>t.status===k).sort((a,b)=>(a.task_order||0)-(b.task_order||0));
-    h+=`<div class="kcol" data-status="${k}"><div class="ch"><span style="font-size:16px;color:${SC[k]}">${SI[k]}</span><span style="font-size:13px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:0.5px">${l}</span><span style="font-size:11px;color:#555;margin-left:auto">${c.length}</span></div>${c.map(t=>rCard(t)).join('')}</div>`}
-  return h+`</div><button class="btn-cal" style="margin-top:16px;border-color:${p.color}44;background:${p.color}11;color:${p.color}" data-action="add-task-project" data-id="${p.id}">+ Taak toevoegen</button>`;
+  const p=projects.find(x=>x.id===SP);if(!p)return"";
+  const sps=projSubprojects(p.id);
+  const unassigned=projTasks(p.id).filter(t=>!t.subproject_id);
+  const allPT=projTasks(p.id),doneC=allPT.filter(t=>t.status==="done").length;
+
+  let h=`<button class="backbtn" data-action="back">← Terug</button>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+      <div style="width:6px;height:40px;border-radius:3px;background:${p.color}"></div>
+      <div style="flex:1"><h2 class="stitle" style="font-size:24px;color:${p.color}">${esc(p.title)}</h2><p style="margin:4px 0 0;font-size:13px;color:#777">${esc(p.description)} · ${doneC}/${allPT.length} klaar</p></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-sm" style="background:${p.color}11;color:${p.color};border:1px solid ${p.color}44" data-action="add-sp" data-id="${p.id}">+ Subproject</button>
+        <button class="btn-sm" style="background:${p.color}11;color:${p.color};border:1px solid ${p.color}44" data-action="add-task-project" data-id="${p.id}">+ Taak</button>
+        <button class="btn-danger" data-action="delete-project" data-id="${p.id}">Verwijder</button>
+      </div>
+    </div>`;
+
+  // Render subprojects as collapsible sections with kanban inside
+  sps.forEach(sp=>{
+    const spt=spTasks(sp.id);const spDone=spt.filter(t=>t.status==="done").length;const spPct=spt.length?(spDone/spt.length)*100:0;
+    const isOpen=!collapsed[sp.id];
+    h+=`<div class="sp-section">
+      <div class="sp-header" data-action="toggle-sp" data-id="${sp.id}">
+        <span class="sp-toggle${isOpen?' open':''}">▶</span>
+        <span style="font-size:14px;font-weight:600;color:#D4C4B0">${esc(sp.title)}</span>
+        <span style="font-size:11px;color:#666">${spDone}/${spt.length}</span>
+        <div class="sp-progress"><div class="sp-progress-fill" style="background:${p.color};width:${spPct}%"></div></div>
+        <div class="sp-actions">
+          <button class="btn-sm" style="background:rgba(255,255,255,0.04);color:#888" data-action="add-task-sp" data-pid="${p.id}" data-spid="${sp.id}" onclick="event.stopPropagation()">+ Taak</button>
+          <button class="btn-sm" style="background:rgba(232,93,74,0.08);color:#E85D4A" data-action="delete-sp" data-id="${sp.id}" onclick="event.stopPropagation()">✕</button>
+        </div>
+      </div>
+      <div class="sp-body${isOpen?'':' collapsed'}">
+        <div class="kanban" style="margin-top:12px">`;
+    for(const[k,l]of Object.entries(ST)){const c=spt.filter(t=>t.status===k).sort((a,b)=>(a.task_order||0)-(b.task_order||0));
+      h+=`<div class="kcol" data-status="${k}"><div class="ch"><span style="font-size:14px;color:${SC[k]}">${SI[k]}</span><span style="font-size:12px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:0.5px">${l}</span><span style="font-size:11px;color:#555;margin-left:auto">${c.length}</span></div>${c.map(t=>rCard(t)).join('')}</div>`}
+    h+=`</div></div></div>`;
+  });
+
+  // Unassigned tasks (no subproject)
+  if(unassigned.length||!sps.length){
+    h+=`<div class="unassigned-section" style="margin-top:${sps.length?'20':'0'}px">`;
+    if(sps.length)h+=`<div class="unassigned-header">📋 Zonder subproject <span style="font-size:11px;color:#555">${unassigned.length}</span></div>`;
+    h+=`<div class="kanban">`;
+    for(const[k,l]of Object.entries(ST)){const c=unassigned.filter(t=>t.status===k).sort((a,b)=>(a.task_order||0)-(b.task_order||0));
+      h+=`<div class="kcol" data-status="${k}"><div class="ch"><span style="font-size:14px;color:${SC[k]}">${SI[k]}</span><span style="font-size:12px;font-weight:600;color:#AAA;text-transform:uppercase;letter-spacing:0.5px">${l}</span><span style="font-size:11px;color:#555;margin-left:auto">${c.length}</span></div>${c.map(t=>rCard(t)).join('')}</div>`}
+    h+=`</div></div>`;
+  }
+  return h;
 }
 
 function rProjList(){
   let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Projecten</h2><button class="btn-p" data-action="add-project">+ Nieuw project</button></div>`;
-  projects.forEach(p=>{const pt=projTasks(p.id),d=pt.filter(t=>t.status==="done").length,tt=pt.length;
-    h+=`<div class="proj-list-card" style="border:1px solid ${p.color}33" data-action="open-project" data-id="${p.id}"><div class="pacc" style="background:${p.color}"></div><div style="display:flex;justify-content:space-between"><div><h3 style="margin:0;font-size:18px;font-weight:600;color:${p.color}">${esc(p.title)}</h3><p style="margin:6px 0 0;font-size:13px;color:#777">${esc(p.description)}</p></div><span style="font-size:13px;color:#666">${d}/${tt} klaar</span></div><div style="margin-top:16px">${pt.filter(t=>t.status!=="done").slice(0,5).map(t=>`<span class="tag">${esc(t.title)}</span>`).join('')}</div></div>`});
+  projects.forEach(p=>{const pt=projTasks(p.id),d=pt.filter(t=>t.status==="done").length,tt=pt.length;const sps=projSubprojects(p.id);
+    h+=`<div class="proj-list-card" style="border:1px solid ${p.color}33" data-action="open-project" data-id="${p.id}"><div class="pacc" style="background:${p.color}"></div><div style="display:flex;justify-content:space-between"><div><h3 style="margin:0;font-size:18px;font-weight:600;color:${p.color}">${esc(p.title)}</h3><p style="margin:6px 0 0;font-size:13px;color:#777">${esc(p.description)}${sps.length?` · ${sps.length} subproject${sps.length>1?'en':''}`:''}</p></div><span style="font-size:13px;color:#666">${d}/${tt} klaar</span></div>
+    ${sps.length?`<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">${sps.map(s=>{const st=spTasks(s.id),sd=st.filter(t=>t.status==='done').length;return`<span class="tag" style="border-left:2px solid ${p.color}">${esc(s.title)} ${sd}/${st.length}</span>`}).join('')}</div>`:''}
+    </div>`});
   return h;
 }
 
 function rTimeline(){
   const all=allFlat(),pl=all.filter(t=>t.planned&&t.status!=="done").sort((a,b)=>a.planned===b.planned?(a.planned_time||"99:99").localeCompare(b.planned_time||"99:99"):a.planned.localeCompare(b.planned));
   const unp=all.filter(t=>!t.planned&&t.status!=="done");
-  let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Planning</h2><div style="display:flex;gap:8px">
-    ${pl.length?`<button class="btn-cal" data-action="export-all">📥 Exporteer .ics</button>`:''}
-  </div></div>`;
-  if(!pl.length)h+=`<div class="empty-state"><p style="font-size:15px">Nog geen klussen ingepland</p><p style="font-size:12px;color:#444;margin-top:8px">Klik op een klus en vul een datum in</p></div>`;
-  else pl.forEach(t=>{
-    h+=`<div class="trow"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.planned_time?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.planned_time}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}</div><span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span>
-    <a class="ics-btn" href="${gcalUrl(t)}" target="_blank" rel="noopener" title="Toevoegen aan Google Agenda" onclick="event.stopPropagation()">📅</a>
-    <button class="ics-btn" data-action="export-one" data-id="${t.id}" title="Download .ics">📥</button></div>`});
+  let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Planning</h2>${pl.length?`<button class="btn-cal" data-action="export-all">📥 Exporteer .ics</button>`:''}</div>`;
+  if(!pl.length)h+=`<div class="empty-state"><p style="font-size:15px">Nog geen klussen ingepland</p></div>`;
+  else pl.forEach(t=>{h+=`<div class="trow"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.planned_time?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.planned_time}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}${t.spT?`<span style="font-size:10px;color:#777;margin-left:4px">/ ${esc(t.spT)}</span>`:''}</div><span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span><a class="ics-btn" href="${gcalUrl(t)}" target="_blank" onclick="event.stopPropagation()" title="Google Agenda">📅</a><button class="ics-btn" data-action="export-one" data-id="${t.id}" title=".ics">📥</button></div>`});
   if(unp.length)h+=`<div style="margin-top:24px"><h3 style="font-size:14px;color:#666;font-weight:500;margin-bottom:12px">Nog niet ingepland</h3><div style="display:flex;flex-wrap:wrap;gap:8px">${unp.map(t=>`<span class="chip" data-action="edit" data-id="${t.id}">${esc(t.title)}</span>`).join('')}</div></div>`;
   return h;
 }
 
-// ============ EVENT BINDING ============
+// ============ BIND ============
 function bind(){
   document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{V=b.dataset.view;SP=null;render()}));
   document.getElementById('fsbtn')?.addEventListener('click',toggleFS);
@@ -383,12 +418,16 @@ function bind(){
       switch(a){
         case'cycle':e.stopPropagation();cycleStatus(id);break;
         case'edit':showEdit(id);break;
-        case'add-task':showAdd(null);break;
-        case'add-task-project':showAdd(id);break;
+        case'add-task':showAdd(null,null);break;
+        case'add-task-project':showAdd(id,null);break;
+        case'add-task-sp':showAdd(el.dataset.pid,el.dataset.spid);break;
         case'add-project':showAddProj();break;
+        case'add-sp':showAddSP(id);break;
         case'open-project':SP=id;V='projects';render();break;
         case'back':SP=null;render();break;
-        case'delete-project':removeProject(id);break;
+        case'delete-project':if(confirm('Project en alle taken verwijderen?'))removeProject(id);break;
+        case'delete-sp':if(confirm('Subproject verwijderen? Taken worden losgekoppeld.'))removeSubproject(id);break;
+        case'toggle-sp':collapsed[id]=!collapsed[id];render();break;
         case'export-all':dlICS(tasks);break;
         case'export-one':dlOne(id);break;
       }
@@ -398,12 +437,9 @@ function bind(){
     c.addEventListener('click',e=>{if(!e.target.closest('.status-btn'))showEdit(c.dataset.id)});
     c.addEventListener('dragstart',onDS);c.addEventListener('dragend',onDE);
   });
-  document.querySelectorAll('.kcol').forEach(c=>{
-    c.addEventListener('dragover',onDO);c.addEventListener('dragleave',onDL);c.addEventListener('drop',onDR);
-  });
+  document.querySelectorAll('.kcol').forEach(c=>{c.addEventListener('dragover',onDO);c.addEventListener('dragleave',onDL);c.addEventListener('drop',onDR)});
 }
 
-// ============ INIT ============
 dbLoad();
 </script>
 </body>
