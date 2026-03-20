@@ -84,8 +84,58 @@ body{font-family:'DM Sans',sans-serif;background:linear-gradient(170deg,#1a1a2e 
 .modal h3{margin-bottom:20px;font-size:18px;font-family:'Playfair Display',serif;color:#D4C4B0}
 .modal label{font-size:12px;color:#888;display:block;margin-bottom:6px;font-weight:500}
 .mi{width:100%;padding:10px 14px;border-radius:10px;font-size:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#E8E4DF;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:14px;color-scheme:dark;box-sizing:border-box}
-select.mi{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23888'%3E%3Cpath d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
 textarea.mi{resize:vertical}
+/* Custom select */
+.csel{position:relative;margin-bottom:14px}
+.csel-btn{width:100%;padding:10px 14px;border-radius:10px;font-size:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#E8E4DF;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.csel-btn:hover{border-color:rgba(255,255,255,0.15)}
+.csel-btn::after{content:'▾';color:#666;font-size:12px}
+.csel-drop{position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#252a4a;border:1px solid rgba(255,255,255,0.1);border-radius:10px;max-height:200px;overflow-y:auto;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:none}
+.csel-drop.open{display:block}
+.csel-opt{padding:9px 14px;cursor:pointer;font-size:13px;color:#CCC;transition:background 0.1s}
+.csel-opt:first-child{border-radius:10px 10px 0 0}
+.csel-opt:last-child{border-radius:0 0 10px 10px}
+.csel-opt:hover{background:rgba(255,255,255,0.06)}
+.csel-opt.active{background:rgba(212,118,60,0.15);color:#F0C27F}
+/* Custom date picker */
+.cdp{position:relative;margin-bottom:14px}
+.cdp-btn{width:100%;padding:10px 14px;border-radius:10px;font-size:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#E8E4DF;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.cdp-btn:hover{border-color:rgba(255,255,255,0.15)}
+.cdp-btn .placeholder{color:#666}
+.cdp-panel{position:absolute;top:100%;left:0;margin-top:4px;background:#252a4a;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:none;min-width:280px}
+.cdp-panel.open{display:block}
+.cdp-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cdp-nav button{background:none;border:none;color:#AAA;cursor:pointer;font-size:16px;padding:4px 8px;border-radius:6px}
+.cdp-nav button:hover{background:rgba(255,255,255,0.06)}
+.cdp-nav span{font-size:14px;font-weight:600;color:#D4C4B0}
+.cdp-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px}
+.cdp-weekdays span{text-align:center;font-size:11px;color:#666;font-weight:500;padding:4px 0}
+.cdp-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cdp-day{text-align:center;padding:7px 0;font-size:13px;color:#AAA;cursor:pointer;border-radius:8px;transition:all 0.1s}
+.cdp-day:hover{background:rgba(255,255,255,0.06)}
+.cdp-day.other{color:#444}
+.cdp-day.today{color:#F0C27F;font-weight:600}
+.cdp-day.selected{background:rgba(212,118,60,0.25);color:#F0C27F;font-weight:600}
+.cdp-day.empty{cursor:default}
+.cdp-actions{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06)}
+.cdp-actions button{background:none;border:none;font-size:12px;font-family:inherit;cursor:pointer;padding:4px 8px;border-radius:6px}
+.cdp-actions button:first-child{color:#E85D4A}.cdp-actions button:last-child{color:#7BA3D4}
+.cdp-actions button:hover{background:rgba(255,255,255,0.06)}
+/* Custom time picker */
+.ctp{position:relative;margin-bottom:14px}
+.ctp-btn{width:100%;padding:10px 14px;border-radius:10px;font-size:14px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#E8E4DF;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between}
+.ctp-btn:hover{border-color:rgba(255,255,255,0.15)}
+.ctp-btn .placeholder{color:#666}
+.ctp-panel{position:absolute;top:100%;left:0;right:0;margin-top:4px;background:#252a4a;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:0;z-index:100;box-shadow:0 8px 24px rgba(0,0,0,0.4);display:none;max-height:280px;overflow-y:auto}
+.ctp-panel.open{display:block}
+.ctp-section{padding:6px 12px 2px;font-size:10px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:0.5px;position:sticky;top:0;background:#252a4a;z-index:1}
+.ctp-slots{display:flex;flex-wrap:wrap;gap:4px;padding:4px 12px 8px}
+.ctp-slot{padding:7px 0;text-align:center;font-size:13px;color:#AAA;cursor:pointer;border-radius:8px;transition:all 0.1s;width:calc(33.33% - 3px)}
+.ctp-slot:hover{background:rgba(255,255,255,0.06)}
+.ctp-slot.active{background:rgba(212,118,60,0.25);color:#F0C27F;font-weight:600}
+.ctp-clear{padding:8px 12px;border-top:1px solid rgba(255,255,255,0.06);text-align:center;position:sticky;bottom:0;background:#252a4a}
+.ctp-clear button{background:none;border:none;color:#E85D4A;font-size:12px;font-family:inherit;cursor:pointer;padding:4px 8px;border-radius:6px}
+.ctp-clear button:hover{background:rgba(255,255,255,0.06)}
 .prio-row,.status-row{display:flex;gap:8px;margin-bottom:14px}
 .pbtn,.sbtn{flex:1;padding:8px 0;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;font-weight:500;background:rgba(255,255,255,0.04);color:#666;display:flex;align-items:center;justify-content:center;gap:6px}
 .dt-row{display:flex;gap:12px;margin-bottom:14px}
@@ -332,82 +382,228 @@ function toggleFS(){if(!document.fullscreenElement)document.documentElement.requ
 function showM(html){const bg=document.createElement("div");bg.className="mbg";bg.innerHTML='<div class="modal">'+html+'</div>';bg.addEventListener('click',e=>{if(e.target===bg)bg.remove()});document.body.appendChild(bg);setTimeout(()=>{const f=bg.querySelector("input:not([type=date]):not([type=time]),textarea");if(f)f.focus()},50);return bg}
 function closeM(){document.querySelector(".mbg")?.remove()}
 
+// ============ CUSTOM PICKERS ============
+// Close all open pickers when clicking outside
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.csel')&&!e.target.closest('.cdp')&&!e.target.closest('.ctp')){
+    document.querySelectorAll('.csel-drop.open,.cdp-panel.open,.ctp-panel.open').forEach(d=>d.classList.remove('open'));
+  }
+});
+
+function initSelect(container,onChange){
+  const btn=container.querySelector('.csel-btn');
+  const drop=container.querySelector('.csel-drop');
+  btn.addEventListener('click',e=>{e.stopPropagation();document.querySelectorAll('.csel-drop.open,.cdp-panel.open,.ctp-panel.open').forEach(d=>{if(d!==drop)d.classList.remove('open')});drop.classList.toggle('open')});
+  drop.querySelectorAll('.csel-opt').forEach(opt=>{
+    opt.addEventListener('click',e=>{e.stopPropagation();const val=opt.dataset.value;
+      drop.querySelectorAll('.csel-opt').forEach(o=>o.classList.toggle('active',o.dataset.value===val));
+      btn.querySelector('.csel-text').textContent=opt.textContent;drop.classList.remove('open');
+      if(onChange)onChange(val);
+    });
+  });
+}
+
+function initDatePicker(container,value,onChange){
+  const btn=container.querySelector('.cdp-btn');
+  const panel=container.querySelector('.cdp-panel');
+  let selected=value?new Date(value+'T00:00:00'):null;
+  let viewDate=selected?new Date(selected):new Date();
+
+  btn.addEventListener('click',e=>{e.stopPropagation();document.querySelectorAll('.csel-drop.open,.cdp-panel.open,.ctp-panel.open').forEach(d=>{if(d!==panel)d.classList.remove('open')});panel.classList.toggle('open');if(panel.classList.contains('open'))renderCal()});
+
+  function renderCal(){
+    const y=viewDate.getFullYear(),m=viewDate.getMonth();
+    const months=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+    const first=new Date(y,m,1),last=new Date(y,m+1,0);
+    const startDay=(first.getDay()+6)%7;// Monday=0
+    const today=new Date();today.setHours(0,0,0,0);
+    const p2=n=>String(n).padStart(2,'0');
+
+    let html=`<div class="cdp-nav"><button data-dir="-1">◂</button><span>${months[m]} ${y}</span><button data-dir="1">▸</button></div>`;
+    html+=`<div class="cdp-weekdays"><span>ma</span><span>di</span><span>wo</span><span>do</span><span>vr</span><span>za</span><span>zo</span></div>`;
+    html+=`<div class="cdp-days">`;
+    // Days from prev month
+    const prevLast=new Date(y,m,0).getDate();
+    for(let i=startDay-1;i>=0;i--)html+=`<div class="cdp-day other" data-d="${y}-${p2(m)}-${p2(prevLast-i)}">${prevLast-i}</div>`;
+    // Current month
+    for(let d=1;d<=last.getDate();d++){
+      const dt=new Date(y,m,d);dt.setHours(0,0,0,0);
+      const iso=y+'-'+p2(m+1)+'-'+p2(d);
+      const cls=['cdp-day'];
+      if(dt.getTime()===today.getTime())cls.push('today');
+      if(selected&&dt.getTime()===selected.getTime())cls.push('selected');
+      html+=`<div class="${cls.join(' ')}" data-d="${iso}">${d}</div>`;
+    }
+    // Fill remaining
+    const totalCells=startDay+last.getDate();
+    const remaining=totalCells%7===0?0:7-totalCells%7;
+    for(let i=1;i<=remaining;i++)html+=`<div class="cdp-day other">${i}</div>`;
+    html+=`</div><div class="cdp-actions"><button data-clear>Wissen</button><button data-today>Vandaag</button></div>`;
+    panel.innerHTML=html;
+
+    panel.querySelectorAll('.cdp-nav button').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();viewDate.setMonth(viewDate.getMonth()+parseInt(b.dataset.dir));renderCal()}));
+    panel.querySelectorAll('.cdp-day:not(.empty):not(.other)').forEach(d=>d.addEventListener('click',e=>{
+      e.stopPropagation();const iso=d.dataset.d;selected=new Date(iso+'T00:00:00');
+      btn.querySelector('.cdp-text').textContent=fd(iso);btn.querySelector('.cdp-text').classList.remove('placeholder');
+      panel.classList.remove('open');if(onChange)onChange(iso);
+    }));
+    panel.querySelector('[data-clear]')?.addEventListener('click',e=>{e.stopPropagation();selected=null;
+      btn.querySelector('.cdp-text').textContent='Geen datum';btn.querySelector('.cdp-text').classList.add('placeholder');
+      panel.classList.remove('open');if(onChange)onChange('');
+    });
+    panel.querySelector('[data-today]')?.addEventListener('click',e=>{e.stopPropagation();const t=new Date();t.setHours(0,0,0,0);selected=t;
+      const p2=n=>String(n).padStart(2,'0');const iso=t.getFullYear()+'-'+p2(t.getMonth()+1)+'-'+p2(t.getDate());
+      btn.querySelector('.cdp-text').textContent=fd(iso);btn.querySelector('.cdp-text').classList.remove('placeholder');
+      panel.classList.remove('open');if(onChange)onChange(iso);
+    });
+  }
+}
+
+function initTimePicker(container,value,onChange){
+  const btn=container.querySelector('.ctp-btn');
+  const panel=container.querySelector('.ctp-panel');
+  let sel=value||'';
+
+  btn.addEventListener('click',e=>{e.stopPropagation();document.querySelectorAll('.csel-drop.open,.cdp-panel.open,.ctp-panel.open').forEach(d=>{if(d!==panel)d.classList.remove('open')});panel.classList.toggle('open')});
+
+  const sections=[
+    {label:'Ochtend',start:6,end:11},
+    {label:'Middag',start:12,end:17},
+    {label:'Avond',start:18,end:22}
+  ];
+  let html='';
+  sections.forEach(sec=>{
+    html+=`<div class="ctp-section">${sec.label}</div><div class="ctp-slots">`;
+    for(let h=sec.start;h<=sec.end;h++){
+      for(const m of['00','30']){
+        const t=String(h).padStart(2,'0')+':'+m;
+        html+=`<div class="ctp-slot${sel===t?' active':''}" data-t="${t}">${t}</div>`;
+      }
+    }
+    html+=`</div>`;
+  });
+  html+=`<div class="ctp-clear"><button data-clear>Wissen</button></div>`;
+  panel.innerHTML=html;
+
+  panel.querySelectorAll('.ctp-slot').forEach(s=>s.addEventListener('click',e=>{
+    e.stopPropagation();sel=s.dataset.t;
+    panel.querySelectorAll('.ctp-slot').forEach(x=>x.classList.toggle('active',x.dataset.t===sel));
+    btn.querySelector('.ctp-text').textContent=sel;btn.querySelector('.ctp-text').classList.remove('placeholder');
+    panel.classList.remove('open');if(onChange)onChange(sel);
+  }));
+  panel.querySelector('[data-clear]')?.addEventListener('click',e=>{e.stopPropagation();sel='';
+    panel.querySelectorAll('.ctp-slot').forEach(x=>x.classList.remove('active'));
+    btn.querySelector('.ctp-text').textContent='Geen tijd';btn.querySelector('.ctp-text').classList.add('placeholder');
+    panel.classList.remove('open');if(onChange)onChange('');
+  });
+
+  // Scroll to active slot on open
+  if(sel){setTimeout(()=>{const active=panel.querySelector('.ctp-slot.active');if(active)active.scrollIntoView({block:'center',behavior:'instant'})},50)}
+}
+
 function showEdit(id){
   const t=findTask(id);if(!t)return;
-  const projOpts=projects.map(p=>`<option value="${p.id}"${t.project_id===p.id?' selected':''}>${esc(p.title)}</option>`).join('');
-  // Build subproject options based on current project
-  function spOpts(pid){
-    const sps=subprojects.filter(s=>s.project_id===pid);
-    if(!sps.length)return'';
-    return sps.map(s=>`<option value="${s.id}"${t.subproject_id===s.id?' selected':''}>${esc(s.title)}</option>`).join('');
-  }
+  const curProj=t.project_id?projects.find(p=>p.id===t.project_id):null;
   const hasSps=t.project_id&&subprojects.some(s=>s.project_id===t.project_id);
+  const curSp=t.subproject_id?subprojects.find(s=>s.id===t.subproject_id):null;
+  let planned=t.planned||'',plannedTime=t.planned_time||'',projId=t.project_id||'',spId=t.subproject_id||'';
+
+  function projOptsHtml(sel){return`<div class="csel-opt${!sel?' active':''}" data-value="">— Geen —</div>`+projects.map(p=>`<div class="csel-opt${sel===p.id?' active':''}" data-value="${p.id}">${esc(p.title)}</div>`).join('')}
+  function spOptsHtml(pid,sel){const sps=subprojects.filter(s=>s.project_id===pid);return`<div class="csel-opt${!sel?' active':''}" data-value="">— Geen —</div>`+sps.map(s=>`<div class="csel-opt${sel===s.id?' active':''}" data-value="${s.id}">${esc(s.title)}</div>`).join('')}
+
   const bg=showM(`<h3>Klus bewerken</h3>
+    <label>Titel</label><input class="mi" id="et" value="${esc(t.title)}">
+    <div class="dt-row">
+      <div style="flex:1"><label>Datum</label><div class="cdp" id="edp"><div class="cdp-btn"><span class="cdp-text${t.planned?'':' placeholder'}">${t.planned?fd(t.planned):'Geen datum'}</span><span style="color:#666">📅</span></div><div class="cdp-panel"></div></div></div>
+      <div style="flex:1"><label>Tijdstip</label><div class="ctp" id="etp"><div class="ctp-btn"><span class="ctp-text${t.planned_time?'':' placeholder'}">${t.planned_time||'Geen tijd'}</span><span style="color:#666">⏰</span></div><div class="ctp-panel"></div></div></div>
+    </div>
+    <div class="dt-row">
+      <div style="flex:1"><label>Prioriteit</label><div class="prio-row" id="epr">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${t.priority===k?PC[k]+'22':'rgba(255,255,255,0.04)'};color:${t.priority===k?PC[k]:'#666'}">${v}</button>`).join('')}</div></div>
+      <div style="flex:1"><label>Toegewezen aan</label><div class="prio-row" id="eas">
+        <button class="sbtn" data-a="" style="background:${!t.assignee?'rgba(255,255,255,0.12)':'rgba(255,255,255,0.04)'};color:${!t.assignee?'#E8E4DF':'#666'}">—</button>
+        <button class="sbtn" data-a="Stijn" style="background:${t.assignee==='Stijn'?'rgba(91,123,178,0.22)':'rgba(255,255,255,0.04)'};color:${t.assignee==='Stijn'?'#8AB4F8':'#666'}">Stijn</button>
+        <button class="sbtn" data-a="Machteld" style="background:${t.assignee==='Machteld'?'rgba(197,91,122,0.22)':'rgba(255,255,255,0.04)'};color:${t.assignee==='Machteld'?'#E091AB':'#666'}">Machteld</button>
+      </div></div>
+    </div>
+    <div class="dt-row">
+      <div style="flex:1"><label>Project</label><div class="csel" id="epj-sel"><div class="csel-btn"><span class="csel-text">${curProj?esc(curProj.title):'— Geen —'}</span></div><div class="csel-drop">${projOptsHtml(t.project_id)}</div></div></div>
+      <div style="flex:1;${hasSps?'':'display:none'}" id="esp-wrap"><label>Subproject</label><div class="csel" id="esp-sel"><div class="csel-btn"><span class="csel-text">${curSp?esc(curSp.title):'— Geen —'}</span></div><div class="csel-drop">${spOptsHtml(t.project_id,t.subproject_id)}</div></div></div>
+    </div>
+    <label>Notities</label><textarea class="mi" id="en" rows="2">${esc(t.notes||'')}</textarea>
     <label>Status</label>
     <div class="status-row" id="esr">${Object.entries(ST).map(([k,v])=>`<button class="sbtn" data-s="${k}" style="background:${t.status===k?SC[k]+'22':'rgba(255,255,255,0.04)'};color:${t.status===k?SC[k]:'#666'}">${SI[k]} ${v}</button>`).join('')}</div>
-    <label>Titel</label><input class="mi" id="et" value="${esc(t.title)}">
-    <label>Prioriteit</label>
-    <div class="prio-row" id="epr">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${t.priority===k?PC[k]+'22':'rgba(255,255,255,0.04)'};color:${t.priority===k?PC[k]:'#666'}">${v}</button>`).join('')}</div>
-    <label>Project</label>
-    <select class="mi" id="epj"><option value="">— Geen project —</option>${projOpts}</select>
-    <div id="esp-wrap" style="${hasSps?'':'display:none'}"><label>Subproject</label><select class="mi" id="esp"><option value="">— Geen subproject —</option>${spOpts(t.project_id)}</select></div>
-    <label>Toegewezen aan</label>
-    <div class="prio-row" id="eas">
-      <button class="sbtn" data-a="" style="background:${!t.assignee?'rgba(255,255,255,0.12)':'rgba(255,255,255,0.04)'};color:${!t.assignee?'#E8E4DF':'#666'}">— Geen —</button>
-      <button class="sbtn" data-a="Stijn" style="background:${t.assignee==='Stijn'?'rgba(91,123,178,0.22)':'rgba(255,255,255,0.04)'};color:${t.assignee==='Stijn'?'#8AB4F8':'#666'}">Stijn</button>
-      <button class="sbtn" data-a="Machteld" style="background:${t.assignee==='Machteld'?'rgba(197,91,122,0.22)':'rgba(255,255,255,0.04)'};color:${t.assignee==='Machteld'?'#E091AB':'#666'}">Machteld</button>
-    </div>
-    <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ed" value="${t.planned||''}"></div><div><label>Tijdstip</label><input type="time" class="mi" id="etm" value="${t.planned_time||''}"></div></div>
-    <label>Notities</label><textarea class="mi" id="en" rows="3">${esc(t.notes||'')}</textarea>
-    <div id="ecr" style="${t.planned?'':'display:none'}">
-      <button class="btn-gcal-add" id="gcl-api">📅 ${gcalToken?'Toevoegen aan Google Agenda':'Verbind Google Agenda'}</button>
-    </div>
-    <div class="brow"><button class="bsave" id="es">Opslaan</button><button class="bdel" id="edl">Verwijder</button><button class="bcan" id="ec">Annuleer</button></div>`);
+    <div id="ecr" style="${t.planned?'':'display:none'}"><button class="btn-gcal-add" id="gcl-api">📅 ${gcalToken?'Toevoegen aan Google Agenda':'Verbind Google Agenda'}</button></div>
+    <div class="brow" style="align-items:center"><button class="bsave" id="es">Opslaan</button><button class="bcan" id="ec">Annuleer</button><button id="edl" style="background:none;border:none;color:#E85D4A;font-size:12px;cursor:pointer;font-family:inherit;padding:10px 8px;opacity:0.6">Verwijder</button></div>`);
+
   let st=t.status,pr=t.priority,assignee=t.assignee||'';
+
+  // Init custom pickers
+  initDatePicker(bg.querySelector('#edp'),t.planned,v=>{planned=v;bg.querySelector('#ecr').style.display=v?'':'none'});
+  initTimePicker(bg.querySelector('#etp'),t.planned_time,v=>{plannedTime=v});
+  initSelect(bg.querySelector('#epj-sel'),v=>{
+    projId=v;spId='';
+    const wrap=bg.querySelector('#esp-wrap');const selC=bg.querySelector('#esp-sel');
+    const sps=subprojects.filter(s=>s.project_id===v);
+    if(sps.length){wrap.style.display='';selC.querySelector('.csel-drop').innerHTML=spOptsHtml(v,'');selC.querySelector('.csel-text').textContent='— Geen —';initSelect(selC,sv=>{spId=sv})}
+    else{wrap.style.display='none'}
+  });
+  if(hasSps)initSelect(bg.querySelector('#esp-sel'),v=>{spId=v});
+
   bg.querySelector('#esr').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;st=b.dataset.s;bg.querySelectorAll('#esr .sbtn').forEach(x=>{const k=x.dataset.s;x.style.background=k===st?SC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===st?SC[k]:'#666'})});
   bg.querySelector('#epr').addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(!b)return;pr=b.dataset.p;bg.querySelectorAll('.pbtn').forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})});
   bg.querySelector('#eas').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;assignee=b.dataset.a;bg.querySelectorAll('#eas .sbtn').forEach(x=>{const a=x.dataset.a;const isAct=a===assignee;x.style.background=isAct?(a==='Stijn'?'rgba(91,123,178,0.22)':a==='Machteld'?'rgba(197,91,122,0.22)':'rgba(255,255,255,0.12)'):'rgba(255,255,255,0.04)';x.style.color=isAct?(a==='Stijn'?'#8AB4F8':a==='Machteld'?'#E091AB':'#E8E4DF'):'#666'})});
-  // Update subproject dropdown when project changes
-  bg.querySelector('#epj').addEventListener('change',function(){
-    const pid=this.value;const wrap=bg.querySelector('#esp-wrap');const sel=bg.querySelector('#esp');
-    const sps=subprojects.filter(s=>s.project_id===pid);
-    if(sps.length){wrap.style.display='';sel.innerHTML='<option value="">— Geen subproject —</option>'+sps.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}else{wrap.style.display='none';sel.innerHTML='<option value="">— Geen subproject —</option>'}
-  });
-  function updCal(){const d=bg.querySelector('#ed').value;bg.querySelector('#ecr').style.display=d?'':'none';
-    const btn=bg.querySelector('#gcl-api');if(btn)btn.textContent=gcalToken?'📅 Toevoegen aan Google Agenda':'📅 Verbind Google Agenda'}
-  bg.querySelector('#ed').addEventListener('change',updCal);bg.querySelector('#etm').addEventListener('change',updCal);bg.querySelector('#et').addEventListener('input',updCal);
-  bg.querySelector('#gcl-api').addEventListener('click',()=>{
-    if(!gcalToken){gcalConnect();return}
-    const u=getFormData();saveTask(id,u);gcalCreateEvent(u);
-  });
+  bg.querySelector('#gcl-api').addEventListener('click',()=>{if(!gcalToken){gcalConnect();return}const u=getFormData();saveTask(id,u);gcalCreateEvent(u)});
   bg.querySelector('#es').addEventListener('click',()=>{saveTask(id,getFormData());closeM()});
   bg.querySelector('#edl').addEventListener('click',()=>{if(!confirm('Verwijderen?'))return;removeTask(id);closeM()});
   bg.querySelector('#ec').addEventListener('click',closeM);
-  function getFormData(){const pid=bg.querySelector('#epj').value||null;const spid=bg.querySelector('#esp').value||null;return{title:bg.querySelector('#et').value,priority:pr,status:st,planned:bg.querySelector('#ed').value,planned_time:bg.querySelector('#etm').value,notes:bg.querySelector('#en').value,project_id:pid,subproject_id:pid?spid:null,assignee:assignee||null}}
+  function getFormData(){return{title:bg.querySelector('#et').value,priority:pr,status:st,planned,planned_time:plannedTime,notes:bg.querySelector('#en').value,project_id:projId||null,subproject_id:projId?spId||null:null,assignee:assignee||null}}
 }
 
 function showAdd(pid,spid){
-  const projOpts=projects.map(p=>`<option value="${p.id}"${pid===p.id?' selected':''}>${esc(p.title)}</option>`).join('');
+  const curProj=pid?projects.find(p=>p.id===pid):null;
   const sps=pid?subprojects.filter(s=>s.project_id===pid):[];
+  const curSp=spid?subprojects.find(s=>s.id===spid):null;
+  let planned='',plannedTime='',projId=pid||'',spIdVal=spid||'';
+
+  function projOptsHtml(sel){return`<div class="csel-opt${!sel?' active':''}" data-value="">— Geen —</div>`+projects.map(p=>`<div class="csel-opt${sel===p.id?' active':''}" data-value="${p.id}">${esc(p.title)}</div>`).join('')}
+  function spOptsHtml(pid2,sel){const sp=subprojects.filter(s=>s.project_id===pid2);return`<div class="csel-opt${!sel?' active':''}" data-value="">— Geen —</div>`+sp.map(s=>`<div class="csel-opt${sel===s.id?' active':''}" data-value="${s.id}">${esc(s.title)}</div>`).join('')}
+
   const bg=showM(`<h3>Nieuwe klus</h3>
     <label>Titel</label><input class="mi" id="at" placeholder="Wat moet er gebeuren?">
-    <label>Prioriteit</label><div class="prio-row" id="apr">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${k==='medium'?PC.medium+'22':'rgba(255,255,255,0.04)'};color:${k==='medium'?PC.medium:'#666'}">${v}</button>`).join('')}</div>
-    <label>Project</label><select class="mi" id="apj"><option value="">— Geen project —</option>${projOpts}</select>
-    <div id="asp-wrap" style="${sps.length?'':'display:none'}"><label>Subproject</label><select class="mi" id="asp"><option value="">— Geen subproject —</option>${sps.map(s=>`<option value="${s.id}"${spid===s.id?' selected':''}>${esc(s.title)}</option>`).join('')}</select></div>
-    <label>Toegewezen aan</label>
-    <div class="prio-row" id="aas">
-      <button class="sbtn" data-a="" style="background:rgba(255,255,255,0.12);color:#E8E4DF">— Geen —</button>
-      <button class="sbtn" data-a="Stijn" style="background:rgba(255,255,255,0.04);color:#666">Stijn</button>
-      <button class="sbtn" data-a="Machteld" style="background:rgba(255,255,255,0.04);color:#666">Machteld</button>
+    <div class="dt-row">
+      <div style="flex:1"><label>Datum</label><div class="cdp" id="adp"><div class="cdp-btn"><span class="cdp-text placeholder">Geen datum</span><span style="color:#666">📅</span></div><div class="cdp-panel"></div></div></div>
+      <div style="flex:1"><label>Tijdstip</label><div class="ctp" id="atp"><div class="ctp-btn"><span class="ctp-text placeholder">Geen tijd</span><span style="color:#666">⏰</span></div><div class="ctp-panel"></div></div></div>
     </div>
-    <div class="dt-row"><div><label>Datum</label><input type="date" class="mi" id="ad"></div><div><label>Tijdstip</label><input type="time" class="mi" id="atm"></div></div>
+    <div class="dt-row">
+      <div style="flex:1"><label>Prioriteit</label><div class="prio-row" id="apr">${Object.entries(PR).map(([k,v])=>`<button class="pbtn" data-p="${k}" style="background:${k==='medium'?PC.medium+'22':'rgba(255,255,255,0.04)'};color:${k==='medium'?PC.medium:'#666'}">${v}</button>`).join('')}</div></div>
+      <div style="flex:1"><label>Toegewezen aan</label><div class="prio-row" id="aas">
+        <button class="sbtn" data-a="" style="background:rgba(255,255,255,0.12);color:#E8E4DF">—</button>
+        <button class="sbtn" data-a="Stijn" style="background:rgba(255,255,255,0.04);color:#666">Stijn</button>
+        <button class="sbtn" data-a="Machteld" style="background:rgba(255,255,255,0.04);color:#666">Machteld</button>
+      </div></div>
+    </div>
+    <div class="dt-row">
+      <div style="flex:1"><label>Project</label><div class="csel" id="apj-sel"><div class="csel-btn"><span class="csel-text">${curProj?esc(curProj.title):'— Geen —'}</span></div><div class="csel-drop">${projOptsHtml(pid)}</div></div></div>
+      <div style="flex:1;${sps.length?'':'display:none'}" id="asp-wrap"><label>Subproject</label><div class="csel" id="asp-sel"><div class="csel-btn"><span class="csel-text">${curSp?esc(curSp.title):'— Geen —'}</span></div><div class="csel-drop">${spOptsHtml(pid,spid)}</div></div></div>
+    </div>
     <label>Notities</label><textarea class="mi" id="an" rows="2" placeholder="Bijv. wie helpt mee..."></textarea>
     <div class="brow"><button class="bsave" id="as">Toevoegen</button><button class="bcan" id="ac">Annuleer</button></div>`);
+
   let pr="medium",addAssignee='';
+  initDatePicker(bg.querySelector('#adp'),'',v=>{planned=v});
+  initTimePicker(bg.querySelector('#atp'),'',v=>{plannedTime=v});
+  initSelect(bg.querySelector('#apj-sel'),v=>{
+    projId=v;spIdVal='';
+    const wrap=bg.querySelector('#asp-wrap');const selC=bg.querySelector('#asp-sel');
+    const sp=subprojects.filter(s=>s.project_id===v);
+    if(sp.length){wrap.style.display='';selC.querySelector('.csel-drop').innerHTML=spOptsHtml(v,'');selC.querySelector('.csel-text').textContent='— Geen —';initSelect(selC,sv=>{spIdVal=sv})}
+    else{wrap.style.display='none'}
+  });
+  if(sps.length)initSelect(bg.querySelector('#asp-sel'),v=>{spIdVal=v});
+
   bg.querySelector('#apr').addEventListener('click',e=>{const b=e.target.closest('.pbtn');if(!b)return;pr=b.dataset.p;bg.querySelectorAll('.pbtn').forEach(x=>{const k=x.dataset.p;x.style.background=k===pr?PC[k]+'22':'rgba(255,255,255,0.04)';x.style.color=k===pr?PC[k]:'#666'})});
   bg.querySelector('#aas').addEventListener('click',e=>{const b=e.target.closest('.sbtn');if(!b)return;addAssignee=b.dataset.a;bg.querySelectorAll('#aas .sbtn').forEach(x=>{const a=x.dataset.a;const isAct=a===addAssignee;x.style.background=isAct?(a==='Stijn'?'rgba(91,123,178,0.22)':a==='Machteld'?'rgba(197,91,122,0.22)':'rgba(255,255,255,0.12)'):'rgba(255,255,255,0.04)';x.style.color=isAct?(a==='Stijn'?'#8AB4F8':a==='Machteld'?'#E091AB':'#E8E4DF'):'#666'})});
-  bg.querySelector('#apj').addEventListener('change',function(){const pid=this.value;const wrap=bg.querySelector('#asp-wrap');const sel=bg.querySelector('#asp');const sps=subprojects.filter(s=>s.project_id===pid);if(sps.length){wrap.style.display='';sel.innerHTML='<option value="">— Geen subproject —</option>'+sps.map(s=>`<option value="${s.id}">${esc(s.title)}</option>`).join('')}else{wrap.style.display='none'}});
-  bg.querySelector('#as').addEventListener('click',()=>{const ti=bg.querySelector('#at').value.trim();if(!ti)return;const pjid=bg.querySelector('#apj').value||null;const spid=bg.querySelector('#asp')?.value||null;addTask({id:uid(),title:ti,status:"todo",priority:pr,planned:bg.querySelector('#ad').value,planned_time:bg.querySelector('#atm').value,notes:bg.querySelector('#an').value,task_order:tasks.length,project_id:pjid,subproject_id:pjid?spid:null,assignee:addAssignee||null});closeM()});
+  bg.querySelector('#as').addEventListener('click',()=>{const ti=bg.querySelector('#at').value.trim();if(!ti)return;addTask({id:uid(),title:ti,status:"todo",priority:pr,planned,planned_time:plannedTime,notes:bg.querySelector('#an').value,task_order:tasks.length,project_id:projId||null,subproject_id:projId?spIdVal||null:null,assignee:addAssignee||null});closeM()});
   bg.querySelector('#ac').addEventListener('click',closeM);
 }
 
