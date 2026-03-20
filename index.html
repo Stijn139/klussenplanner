@@ -158,6 +158,38 @@ textarea.mi{resize:vertical}
 .proj-list-card{background:rgba(255,255,255,0.03);border-radius:14px;padding:24px;cursor:pointer;position:relative;overflow:hidden;margin-bottom:14px}
 .btn-danger{padding:6px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-family:inherit;background:rgba(232,93,74,0.1);color:#E85D4A}
 .empty-state{text-align:center;padding:60px;color:#555}
+/* Week view */
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:20px}
+@media(max-width:600px){.week-grid{grid-template-columns:repeat(2,1fr)}}
+.week-day{background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.04);min-height:120px;padding:10px}
+.week-day.today{border-color:rgba(240,194,127,0.3)}
+.week-day-header{font-size:11px;font-weight:600;color:#666;text-transform:uppercase;margin-bottom:4px}
+.week-day-num{font-size:18px;font-weight:700;color:#D4C4B0;margin-bottom:8px}
+.week-day-num.today{color:#F0C27F}
+.week-day-num.other-month{color:#444}
+.week-task{padding:6px 8px;margin-bottom:4px;border-radius:6px;font-size:11px;cursor:pointer;border-left:3px solid;background:rgba(255,255,255,0.03);transition:background 0.15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.week-task:hover{background:rgba(255,255,255,0.06)}
+.week-task .wt-time{color:#7BA3D4;margin-right:4px;font-weight:500}
+/* Month view */
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:20px}
+@media(max-width:600px){.month-grid{grid-template-columns:repeat(7,1fr);gap:2px}}
+.month-cell{background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.03);min-height:80px;padding:6px;overflow:hidden}
+.month-cell.today{border-color:rgba(240,194,127,0.3)}
+.month-cell.other{opacity:0.3}
+.month-cell-num{font-size:12px;font-weight:600;color:#888;margin-bottom:4px}
+.month-cell-num.today{color:#F0C27F}
+.month-task{padding:2px 5px;margin-bottom:2px;border-radius:4px;font-size:10px;cursor:pointer;border-left:2px solid;background:rgba(255,255,255,0.04);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.month-task:hover{background:rgba(255,255,255,0.08)}
+.month-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.month-weekdays span{text-align:center;font-size:11px;color:#555;font-weight:600}
+/* Plan nav */
+.plan-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.plan-nav button{background:none;border:none;color:#AAA;cursor:pointer;font-size:18px;padding:4px 8px;border-radius:6px}
+.plan-nav button:hover{background:rgba(255,255,255,0.06)}
+.plan-nav .plan-label{font-size:15px;font-weight:600;color:#D4C4B0;min-width:160px;text-align:center}
+.plan-tabs{display:flex;gap:4px;margin-bottom:16px}
+.plan-tab{padding:6px 14px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:500;font-family:inherit;background:rgba(255,255,255,0.04);color:#888;transition:all 0.15s}
+.plan-tab.active{background:rgba(212,118,60,0.2);color:#F0C27F}
 .loading-screen{display:flex;align-items:center;justify-content:center;height:100vh;font-size:15px;color:#888;gap:10px}
 .gcal-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;margin:-8px -16px 16px;border-radius:10px;background:rgba(66,133,244,0.06);border:1px solid rgba(66,133,244,0.15);font-size:12px;color:#8AB4F8}
 .gcal-bar.connected{background:rgba(107,163,104,0.06);border-color:rgba(107,163,104,0.15);color:#6BA368}
@@ -283,6 +315,7 @@ const ST={todo:"Te doen",doing:"Bezig",done:"Klaar"},PR={high:"Hoog",medium:"Mid
 
 let tasks=[],projects=[],subprojects=[],V="board",SP=null,F="all",PF=null,syncState="loading",idC=100,dragTaskId=null;
 let collapsed={};// track collapsed subprojects
+let PV="list",planDate=new Date();// PV = list|week|month, planDate for navigation
 
 function uid(){idC++;return"id_"+Date.now()+"_"+idC}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML}
@@ -770,19 +803,99 @@ function rProjList(){
 function rTimeline(){
   const all=allFlat(),pl=all.filter(t=>t.planned&&t.status!=="done").sort((a,b)=>a.planned===b.planned?(a.planned_time||"99:99").localeCompare(b.planned_time||"99:99"):a.planned.localeCompare(b.planned));
   const unp=all.filter(t=>!t.planned&&t.status!=="done");
+  const p2=n=>String(n).padStart(2,'0');
+  const months=['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  const days=['ma','di','wo','do','vr','za','zo'];
+  const daysLong=['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag'];
+  const today=new Date();today.setHours(0,0,0,0);
+  const todayISO=today.getFullYear()+'-'+p2(today.getMonth()+1)+'-'+p2(today.getDate());
+
+  function tasksByDate(d){return pl.filter(t=>t.planned===d)}
+  function isoDate(dt){return dt.getFullYear()+'-'+p2(dt.getMonth()+1)+'-'+p2(dt.getDate())}
+
   let h=`<div class="toolbar"><h2 class="stitle" style="font-size:22px">Planning</h2><div style="display:flex;gap:8px;flex-wrap:wrap">
-    ${pl.length&&gcalToken?`<button class="btn-cal" style="border-color:rgba(66,133,244,0.3);background:rgba(66,133,244,0.08);color:#8AB4F8" data-action="gcal-sync-all">📅 Alles naar Google Agenda</button>`:''}
+    ${pl.length&&gcalToken?`<button class="btn-cal" style="border-color:rgba(66,133,244,0.3);background:rgba(66,133,244,0.08);color:#8AB4F8" data-action="gcal-sync-all">📅 Alles naar agenda</button>`:''}
   </div></div>
-  <div class="gcal-bar${gcalToken?' connected':''}">
-    <span>${gcalToken?'✓ Verbonden met Google Agenda':'Google Agenda niet verbonden'}</span>
-    <button class="gcal-connect-btn" data-action="${gcalToken?'gcal-disconnect':'gcal-connect'}">${gcalToken?'Loskoppelen':'Verbinden'}</button>
+  <div class="gcal-bar${gcalToken?' connected':''}"><span>${gcalToken?'✓ Verbonden met Google Agenda':'Google Agenda niet verbonden'}</span><button class="gcal-connect-btn" data-action="${gcalToken?'gcal-disconnect':'gcal-connect'}">${gcalToken?'Loskoppelen':'Verbinden'}</button></div>
+  <div class="plan-tabs">
+    <button class="plan-tab${PV==='list'?' active':''}" data-pv="list">Lijst</button>
+    <button class="plan-tab${PV==='week'?' active':''}" data-pv="week">Week</button>
+    <button class="plan-tab${PV==='month'?' active':''}" data-pv="month">Maand</button>
   </div>`;
-  if(!pl.length)h+=`<div class="empty-state"><p style="font-size:15px">Nog geen klussen ingepland</p></div>`;
-  else pl.forEach(t=>{h+=`<div class="trow" data-action="edit" data-id="${t.id}" style="cursor:pointer"><div style="min-width:110px"><span style="font-size:12px;font-weight:600;color:${ov(t.planned)?'#E85D4A':'#8B8A8A'}">${fd(t.planned)}</span>${t.planned_time?`<span style="font-size:11px;color:#7BA3D4;margin-left:6px">${t.planned_time}</span>`:''}</div><span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span><div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}${t.spT?`<span style="font-size:10px;color:#777;margin-left:4px">/ ${esc(t.spT)}</span>`:''}</div><span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span><span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span>
-    ${t.assignee?`<span style="font-size:10px;padding:1px 6px;border-radius:4px;background:${t.assignee==='Stijn'?'rgba(91,123,178,0.15)':'rgba(197,91,122,0.15)'};color:${t.assignee==='Stijn'?'#8AB4F8':'#E091AB'}">${t.assignee}</span>`:''}
-    <button class="ics-btn" data-action="gcal-add" data-id="${t.id}" title="Naar Google Agenda" onclick="event.stopPropagation()" ${!gcalToken?'style="opacity:0.2"':''}>📅</button></div>`});
+
+  // ===== LIST VIEW =====
+  if(PV==='list'){
+    if(!pl.length)h+=`<div class="empty-state"><p style="font-size:15px">Nog geen klussen ingepland</p></div>`;
+    else{
+      let lastDate='';
+      pl.forEach(t=>{
+        if(t.planned!==lastDate){lastDate=t.planned;h+=`<div style="font-size:12px;font-weight:600;color:#D4C4B0;margin:16px 0 6px;${t.planned===todayISO?'color:#F0C27F':''}">${fd(t.planned)}${t.planned===todayISO?' — Vandaag':''}</div>`}
+        h+=rTimelineRow(t);
+      });
+    }
+  }
+
+  // ===== WEEK VIEW =====
+  if(PV==='week'){
+    const wd=new Date(planDate);const dow=(wd.getDay()+6)%7;wd.setDate(wd.getDate()-dow);// Monday
+    const weekEnd=new Date(wd);weekEnd.setDate(weekEnd.getDate()+6);
+    h+=`<div class="plan-nav"><button data-action="plan-prev">◂</button><span class="plan-label">${wd.getDate()} ${months[wd.getMonth()]} — ${weekEnd.getDate()} ${months[weekEnd.getMonth()]} ${weekEnd.getFullYear()}</span><button data-action="plan-next">▸</button><button data-action="plan-today" style="font-size:12px;color:#7BA3D4">Vandaag</button></div>`;
+    h+=`<div class="week-grid">`;
+    for(let i=0;i<7;i++){
+      const d=new Date(wd);d.setDate(d.getDate()+i);
+      const iso=isoDate(d);const isToday=iso===todayISO;
+      const dayTasks=tasksByDate(iso);
+      h+=`<div class="week-day${isToday?' today':''}">
+        <div class="week-day-header">${daysLong[i]}</div>
+        <div class="week-day-num${isToday?' today':''}">${d.getDate()}</div>
+        ${dayTasks.map(t=>`<div class="week-task" data-action="edit" data-id="${t.id}" style="border-color:${t.pC||PC[t.priority]};color:#CCC">${t.planned_time?`<span class="wt-time">${t.planned_time}</span>`:''}${esc(t.title)}</div>`).join('')}
+      </div>`;
+    }
+    h+=`</div>`;
+  }
+
+  // ===== MONTH VIEW =====
+  if(PV==='month'){
+    const y=planDate.getFullYear(),m=planDate.getMonth();
+    const first=new Date(y,m,1),last=new Date(y,m+1,0);
+    const startDay=(first.getDay()+6)%7;
+    h+=`<div class="plan-nav"><button data-action="plan-prev">◂</button><span class="plan-label">${months[m]} ${y}</span><button data-action="plan-next">▸</button><button data-action="plan-today" style="font-size:12px;color:#7BA3D4">Vandaag</button></div>`;
+    h+=`<div class="month-weekdays">${days.map(d=>`<span>${d}</span>`).join('')}</div><div class="month-grid">`;
+    // Prev month padding
+    const prevLast=new Date(y,m,0).getDate();
+    for(let i=startDay-1;i>=0;i--){
+      const d=prevLast-i;const dt=new Date(y,m-1,d);const iso=isoDate(dt);const dayTasks=tasksByDate(iso);
+      h+=`<div class="month-cell other"><div class="month-cell-num">${d}</div>${dayTasks.slice(0,3).map(t=>`<div class="month-task" data-action="edit" data-id="${t.id}" style="border-color:${t.pC||PC[t.priority]}">${esc(t.title)}</div>`).join('')}${dayTasks.length>3?`<div style="font-size:9px;color:#666;padding:0 5px">+${dayTasks.length-3}</div>`:''}</div>`;
+    }
+    // Current month
+    for(let d=1;d<=last.getDate();d++){
+      const iso=y+'-'+p2(m+1)+'-'+p2(d);const isToday=iso===todayISO;const dayTasks=tasksByDate(iso);
+      h+=`<div class="month-cell${isToday?' today':''}"><div class="month-cell-num${isToday?' today':''}">${d}</div>${dayTasks.slice(0,3).map(t=>`<div class="month-task" data-action="edit" data-id="${t.id}" style="border-color:${t.pC||PC[t.priority]}">${esc(t.title)}</div>`).join('')}${dayTasks.length>3?`<div style="font-size:9px;color:#666;padding:0 5px">+${dayTasks.length-3}</div>`:''}</div>`;
+    }
+    // Next month padding
+    const totalCells=startDay+last.getDate();const rem=totalCells%7===0?0:7-totalCells%7;
+    for(let i=1;i<=rem;i++){
+      const dt=new Date(y,m+1,i);const iso=isoDate(dt);const dayTasks=tasksByDate(iso);
+      h+=`<div class="month-cell other"><div class="month-cell-num">${i}</div>${dayTasks.slice(0,3).map(t=>`<div class="month-task" data-action="edit" data-id="${t.id}" style="border-color:${t.pC||PC[t.priority]}">${esc(t.title)}</div>`).join('')}</div>`;
+    }
+    h+=`</div>`;
+  }
+
+  // Unplanned always visible
   if(unp.length)h+=`<div style="margin-top:24px"><h3 style="font-size:14px;color:#666;font-weight:500;margin-bottom:12px">Nog niet ingepland</h3><div style="display:flex;flex-wrap:wrap;gap:8px">${unp.map(t=>`<span class="chip" data-action="edit" data-id="${t.id}">${esc(t.title)}</span>`).join('')}</div></div>`;
   return h;
+}
+
+function rTimelineRow(t){
+  return`<div class="trow" data-action="edit" data-id="${t.id}" style="cursor:pointer">
+    ${t.planned_time?`<span style="font-size:12px;font-weight:600;color:#7BA3D4;min-width:50px">${t.planned_time}</span>`:`<span style="font-size:12px;color:#555;min-width:50px">hele dag</span>`}
+    <span style="width:3px;height:24px;border-radius:2px;background:${t.pC||PC[t.priority]}"></span>
+    <div style="flex:1"><span style="font-size:14px">${esc(t.title)}</span>${t.pT?`<span style="font-size:11px;color:${t.pC};margin-left:8px">${esc(t.pT)}</span>`:''}${t.spT?`<span style="font-size:10px;color:#777;margin-left:4px">/ ${esc(t.spT)}</span>`:''}</div>
+    <span class="prio-tag" style="background:${PC[t.priority]}18;color:${PC[t.priority]}">${PR[t.priority]}</span>
+    <span style="font-size:14px;color:${SC[t.status]}">${SI[t.status]}</span>
+    ${t.assignee?`<span style="font-size:10px;padding:1px 6px;border-radius:4px;background:${t.assignee==='Stijn'?'rgba(91,123,178,0.15)':'rgba(197,91,122,0.15)'};color:${t.assignee==='Stijn'?'#8AB4F8':'#E091AB'}">${t.assignee}</span>`:''}
+    <button class="ics-btn" data-action="gcal-add" data-id="${t.id}" title="Naar Google Agenda" onclick="event.stopPropagation()" ${!gcalToken?'style="opacity:0.2"':''}>📅</button>
+  </div>`;
 }
 
 // ============ BIND ============
@@ -818,6 +931,20 @@ function bind(){
       }
     });
   });
+  // Plan view tabs
+  document.querySelectorAll('[data-pv]').forEach(b=>b.addEventListener('click',()=>{PV=b.dataset.pv;planDate=new Date();render()}));
+  // Plan navigation
+  document.querySelectorAll('[data-action="plan-prev"]').forEach(b=>b.addEventListener('click',()=>{
+    if(PV==='week')planDate.setDate(planDate.getDate()-7);
+    else if(PV==='month')planDate.setMonth(planDate.getMonth()-1);
+    render();
+  }));
+  document.querySelectorAll('[data-action="plan-next"]').forEach(b=>b.addEventListener('click',()=>{
+    if(PV==='week')planDate.setDate(planDate.getDate()+7);
+    else if(PV==='month')planDate.setMonth(planDate.getMonth()+1);
+    render();
+  }));
+  document.querySelectorAll('[data-action="plan-today"]').forEach(b=>b.addEventListener('click',()=>{planDate=new Date();render()}));
   document.querySelectorAll('.tc').forEach(c=>{
     c.addEventListener('click',e=>{if(!e.target.closest('.status-btn'))showEdit(c.dataset.id)});
     c.addEventListener('dragstart',onDS);c.addEventListener('dragend',onDE);
